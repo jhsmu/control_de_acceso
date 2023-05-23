@@ -14,15 +14,12 @@
       <h3>Uniclaretiana</h3>
       <form>
         <!-- USERNAME INPUT -->
-        <label for="identifiacion">Indentificacion</label>
-        <input type="text" name="indentificacion" placeholder="Digite su Documento">
-        <select required>
-          <option value=""></option>
-          <option value="">Entrada</option>
-          <option value="">Salida</option>
-        </select>
+        <label for="usuario">Usuario</label>
+        <input type="text" name="usuario" placeholder="Digite su Usuario">
+        <label for="clave">Contraseña</label>
+        <input type="text" name="clave" placeholder="Digite su Contraseña">
         <input type="submit" value="ingresar">
-        <a href="./loginadmin.php">Administrador</a><br>
+        <a href="./index.php">Control de Acceso</a><br>
         <a href="#">Lectura de ****</a>
       </form>
     </div>
