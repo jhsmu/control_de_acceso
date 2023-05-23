@@ -1,0 +1,41 @@
+/* Encabezado */
+
+.navbar {
+    height: 100px;
+    background: #f7c04af8;
+}
+.navbar-brand{
+    font-size: 2rem;
+    margin-left: 15px;
+    color: #111;
+}
+.navbar-brand:hover{
+    color: #fff;
+}
+.navbar-nav a:hover{
+    color: #fff;
+}
+.navbar-toggler{
+    border: solid 2px #111;
+    
+}
+.nav-link{
+    color: #111;
+    font-size: 1.1rem;
+}
+.social{
+    color: #111;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+.transparentes {
+    margin: 0 9.9rem 0 0;
+}
+#menu a{
+    color: #111;
+    background-color: #111;
+    font-size: 18px;
+}
+#menu a:hover{
+    color: #00235B;
+}
