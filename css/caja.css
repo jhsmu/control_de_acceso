@@ -1,0 +1,55 @@
+.caja{
+    margin: 15px 15px;
+    position: relative;
+}
+.posiciom{
+    position: absolute;
+    right: 0px;
+    bottom: -9px;
+}
+.caja select{
+    border: none;
+    border-bottom: 1px solid #111;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #111;
+    font-size: 16px;
+    width: 150px;
+  }
+.caja button {
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #b80f22;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+  }
+.caja button:hover{
+    cursor: pointer;
+    background: #ffc107;
+    color: #111;
+}
+.contenido input[type="text"]{
+    border: none;
+    border-bottom: 1px solid #111;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #111;
+    font-size: 16px;
+    width: 100%;
+    height: 30px;
+}
+.contenido select{
+    border: none;
+    border-bottom: 1px solid #111;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #111;
+    font-size: 16px;
+    width: 100%;
+    height: 30px;
+}
