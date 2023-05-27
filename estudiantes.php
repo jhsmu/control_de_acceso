@@ -1,3 +1,12 @@
+<?php
+        include './Database/conexion.php';
+
+        $consulta = "SELECT * FROM estudiante";
+
+        $consulta1 = $DB_con->prepare($consulta);
+        $consulta1->execute();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,19 +27,43 @@
         </header>
     <!-- Fin de encabezado -->
     <!-- Inicio de tabla -->
+    <div class="container">
      <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
-                <th>Carrera</th>
                 <th>Identificaciòn</th>
+                <th>Carrera</th>
+                <th>Correo</th>
                 <th>Telefono</th>
             </tr>
         </thead>
+        <tbody>
+                <?php
+                    if($consulta1->rowCount() > 0){
+                        $rows = $consulta1->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($rows as $row){  
+                ?>
+            <tr>
+                <td><?php echo $row["id"]; ?></td>
+                <td><?php echo $row["nombre"];?></td>
+                <td><?php echo $row["apellido"];?></td>
+                <td><?php echo $row["identificacion"]; ?></td>
+                <td><?php echo $row["carrera"]; ?></td>
+                <td><?php echo $row["correo"]; ?></td>
+                <td><?php echo $row["telefono"]; ?></td>
+                
+            </tr>
+            <?php
+                }
+                    }
+            ?>
+            </tbody>
+        
     </table>
-
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>

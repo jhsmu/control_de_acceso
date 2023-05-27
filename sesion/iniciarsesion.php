@@ -16,10 +16,12 @@ if(isset($_POST["inicio"])){
 
     if($usuario==$admin["usuario"] and $contra==$admin["clave"]){
         session_start();
-        $_SESSION["id_administrador"]=$admin["id_administrador"];
-        $_SESSION["admin"]=$admin["nombre"];
-        header('location:./loginadmin.php');
+        $_SESSION["id"]=$admin["id"];
+        // $_SESSION["admin"]=$admin["nombre"];
+        header('location:../administracion.php');
     }else{
-
+        session_start();
+        $_SESSION["Datos_incorrectos"] = "Datos incorrectos";
+        header("location:../loginadmin.php");
     }
 }
