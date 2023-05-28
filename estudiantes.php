@@ -1,11 +1,30 @@
 <?php
         include './Database/conexion.php';
-
+        if(!isset($_POST["carrera"])){
         $consulta = "SELECT * FROM estudiante";
-
         $consulta1 = $DB_con->prepare($consulta);
         $consulta1->execute();
+        }else{
+        $prueba = $_POST["carrera"];
+        $consulta = "SELECT * FROM estudiante WHERE carrera = :carrera";
+        $consulta1 = $DB_con->prepare($consulta);
+        $consulta1 -> bindParam(":carrera",$prueba);
+        $consulta1->execute();
+        }
 
+        $consultar = "SELECT * FROM carrera";
+        $consulta2 = $DB_con->prepare($consultar);
+        $consulta2->execute();
+
+        $carreras = $consulta2->fetchAll(PDO::FETCH_ASSOC);
+    
+        
+        // $query3 = $connection->prepare("SELECT * FROM producto
+        // INNER JOIN marca ON producto.id_marca =  marca.id_marca
+        // WHERE id_categoria=:categoria");
+        // $query3->bindParam(":categoria", $_POST["categoria"]);
+        // $query3->execute();
+        
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,21 +49,29 @@
     <!-- Fin de encabezado -->
     <div class="caja">
         <div class="posicion">
-            <select name="carrera" id="">
-                <option value="">Seleccione</option>
-                <option value="Ing Sistemas">Ing Sistemas</option>
-                <option value="Ing Industrial" >Ing Industrial</option>
-                <option value="Psicologia" >Psicologia</option>
+            <form action="" method="post">
+            <select name="carrera" id="" onchange="cambio()">
+                <option value="" selected>Seleccione</option>
+                <?php
+                    foreach ($carreras as $key => $carrera){     
+                ?>
+                <option value="<?php echo $carrera["id_carrera"]; ?>"><?php echo $carrera["nombre"]; ?></option>
+                <?php
+                    }                
+                ?>
+                <button type="submit" hidden id="buton"></button>
             </select>
+            </form>
         </div>
         <div class="posiciom">
             <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#agregar_estudiante"> Agregar Estudiante</button>
         </div>
-        
+
    </div>
     <!-- Inicio de tabla -->
     <div class="container">
      <table class="table">
+
         <thead>
             <tr>
                 <th>Id</th>
@@ -57,7 +84,9 @@
             </tr>
         </thead>
         <tbody>
+
                 <?php
+                    // if()
                     if($consulta1->rowCount() > 0){
                         $rows = $consulta1->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($rows as $row){  
@@ -138,3 +167,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>
 </html>
+
+<script> 
+        function cambio(){
+            document.getElementById('boton').click();
+        }
+
+</script>

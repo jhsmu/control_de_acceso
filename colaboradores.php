@@ -32,8 +32,6 @@
         <div class="posicion">
             <select name="cargo" id="cargo">
                 <option value="">Seleccione</option>
-                <option value="Administrativos">Administrativos</option>
-                <option value="Profesores">Profesores</option>
             </select>
         </div>
         <div class="posiciom">
@@ -105,9 +103,6 @@
                         <div class="col-6 mt-3">
                             <label for="cargo">Cargo</label>
                             <select name="cargo" id="cargo">
-                                <option value="">Seleccione</option>
-                                <option value="">Administrativo</option>
-                                <option value="">Profesor</option>
                             </select>
                         </div>
                         <div class="col-6 mt-3">

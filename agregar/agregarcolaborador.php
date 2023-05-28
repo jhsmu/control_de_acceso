@@ -6,7 +6,7 @@ require_once '../database/conexion.php';
 // $consulta->execute();
 // $emails=$consulta->fetchAll(PDO::FETCH_ASSOC);
 
-if(isset($_POST["agregar"])){
+if(isset($_POST["nombre"])){
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
     $documento = $_POST["documento"];
