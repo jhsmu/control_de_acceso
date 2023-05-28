@@ -28,18 +28,19 @@
             <?php include './componentes/header.php' ?>
         </header>
     <!-- Fin de encabezado -->
-    <div class="caja" >
+    <div class="caja">
         <div class="posicion">
-            <select name="cargo" id="">
+            <select name="carrera" id="">
                 <option value="">Seleccione</option>
-                <option value="Ing Sistemas" name="" >Ing Sistemas</option>
-                <option value="Ing Industrial" name="profesor" >Ing Industrial</option>
-                <option value="Psicologia" name="profesor" >Psicologia</option>
+                <option value="Ing Sistemas">Ing Sistemas</option>
+                <option value="Ing Industrial" >Ing Industrial</option>
+                <option value="Psicologia" >Psicologia</option>
             </select>
         </div>
         <div class="posiciom">
             <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#agregar_estudiante"> Agregar Estudiante</button>
         </div>
+        
    </div>
     <!-- Inicio de tabla -->
     <div class="container">
@@ -91,36 +92,36 @@
         </div>
         <div class="modal-body">
             <div class="contenido">
-                <form action="">
+                <form action="" method="post">
                     <div class="row">
                         <div class="col-6">
-                            <label for="">Nombres</label>
-                            <input type="text" name="" id="">
+                            <label for="nombre">Nombres</label>
+                            <input type="text" name="nombre" id="nombre">
                         </div>
                         <div class="col-6">
-                            <label for="">Apellidos</label>
-                            <input type="text" name="" id="">
+                            <label for="apellido">Apellidos</label>
+                            <input type="text" name="apellido" id="apellido">
                         </div>
                         <div class="col-6 mt-3">
-                            <label for="">Numero de documento</label>
-                            <input type="text" name="" id="">
+                            <label for="identificacion">Numero de documento</label>
+                            <input type="text" name="identificacion" id="identificacion">
                         </div>
                         <div class="col-6 mt-3">
-                            <label for="">Carrera</label>
-                            <select name="" id="">
+                            <label for="carrera">Carrera</label>
+                            <select name="carrera" id="carrera">
                             <option value="">Seleccione</option>
-                            <option value="Ing Sistemas" name="" >Ing Sistemas</option>
-                            <option value="Ing Industrial" name="profesor" >Ing Industrial</option>
-                            <option value="Psicologia" name="profesor" >Psicologia</option>
+                            <option value="Ing Sistemas" >Ing Sistemas</option>
+                            <option value="Ing Industrial" >Ing Industrial</option>
+                            <option value="Psicologia" >Psicologia</option>
                             </select>
                         </div>
                         <div class="col-6 mt-3">
-                            <label for="">Correo</label>
-                            <input type="text" name="" id="">
+                            <label for="correo">Correo</label>
+                            <input type="text" name="correo" id="correo">
                         </div>
                         <div class="col-6 mt-3">
-                            <label for="">Telefono</label>
-                            <input type="text" name="" id="">
+                            <label for="telefono">Telefono</label>
+                            <input type="text" name="telefono" id="telefono">
                         </div>
                     </div>
                 </form>

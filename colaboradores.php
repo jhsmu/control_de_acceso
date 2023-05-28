@@ -30,10 +30,10 @@
     <!-- Fin de encabezado -->
    <div class="caja" >
         <div class="posicion">
-            <select name="cargo" id="">
+            <select name="cargo" id="cargo">
                 <option value="">Seleccione</option>
-                <option value="Administrativos" name="administrativo" >Administrativos</option>
-                <option value="Profesores" name="profesor" >Profesores</option>
+                <option value="Administrativos">Administrativos</option>
+                <option value="Profesores">Profesores</option>
             </select>
         </div>
         <div class="posiciom">
@@ -88,39 +88,39 @@
         </div>
         <div class="modal-body">
             <div class="contenido">
-                <form action="">
+                <form action="./agregar/agregarcolaborador.php" method="post">
                     <div class="row">
                         <div class="col-6">
-                            <label for="">Nombres</label>
-                            <input type="text" name="" id="">
+                            <label for="nombre">Nombres</label>
+                            <input type="text" name="nombre" id="nombre">
                         </div>
                         <div class="col-6">
-                            <label for="">Apellidos</label>
-                            <input type="text" name="" id="">
+                            <label for="apellido">Apellidos</label>
+                            <input type="text" name="apellido" id="apellido">
                         </div>
                         <div class="col-12 mt-3">
-                            <label for="">Numero de documento</label>
-                            <input type="text" name="" id="">
+                            <label for="documento">Numero de documento</label>
+                            <input type="text" name="documento" id="documento">
                         </div>
                         <div class="col-6 mt-3">
-                            <label for="">Cargo</label>
-                            <select name="" id="">
+                            <label for="cargo">Cargo</label>
+                            <select name="cargo" id="cargo">
                                 <option value="">Seleccione</option>
                                 <option value="">Administrativo</option>
                                 <option value="">Profesor</option>
                             </select>
                         </div>
                         <div class="col-6 mt-3">
-                            <label for="">Telefono</label>
-                            <input type="text" name="" id="">
+                            <label for="telefono">Telefono</label>
+                            <input type="text" name="telefono" id="telefono">
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" name="agregar">Agregar</button>
                     </div>
                 </form>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary">Agregar</button>
         </div>
         </div>
     </div>
@@ -128,3 +128,59 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>
 </html>
+<?php
+
+if (isset($_SESSION['exitoso'])) {
+    echo "<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'conlaborado agregado exitosamente' 
+        });
+    </script>";
+    unset($_SESSION['exitoso']);
+}
+if (isset($_SESSION['error'])) {
+    echo "<script>
+    Swal.fire({
+        icon: 'info',
+        title: 'Info',
+        text: 'No se pudo guardado su informacion verifiquela'
+        });
+    </script>";
+    unset($_SESSION['error']);
+}
+if (isset($_SESSION['colaboradoRepetido'])) {
+    echo "<script>
+    Swal.fire({
+        icon: 'info',
+        title: 'Info',
+        text: 'El colaborador que desea guardar ya esta registrado'
+        });
+    </script>";
+    unset($_SESSION['colaboradoRepetido']);
+}
+if (isset($_SESSION['documentoRepetido'])) {
+    echo "<script>
+    Swal.fire({
+        icon: 'info',
+        title: 'Info',
+        text: 'El documento ingresado ya existe'
+        });
+    </script>";
+    unset($_SESSION['documentoRepetido']);
+}
+if (isset($_SESSION['telefonoRepetido'])) {
+    echo "<script>
+    Swal.fire({
+        icon: 'info',
+        title: 'Info',
+        text: 'El telefono ya existe'
+        });
+    </script>";
+    unset($_SESSION['telefonoRepetido']);
+}
+
+
+
+?>
