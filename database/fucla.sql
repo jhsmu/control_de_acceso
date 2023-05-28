@@ -56,6 +56,11 @@ CREATE TABLE `cargo` (
   `id_cargo` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `estado_ingreso` (
+  `id_estado` int(11) NOT NULL,
+  `nombre_estado` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 --
 -- Volcado de datos para la tabla `carrera`
 --
@@ -69,6 +74,10 @@ INSERT INTO `cargo` (`id_cargo`, `nombre`) VALUES
 (1, 'administrativo'),
 (2, 'docente');
 
+INSERT INTO `estado_ingreso` (`id_estado`, `nombre_estado`) VALUES
+(1, 'Si estado'),
+(2, 'Entrada'),
+(3, 'Salida');
 
 
 -- --------------------------------------------------------
@@ -83,20 +92,23 @@ CREATE TABLE `colaboradores` (
   `apellido` varchar(35) NOT NULL,
   `documento` varchar(11) NOT NULL,
   `cargo` int(10) NOT NULL,
-  `telefono` varchar(25) NOT NULL
+  `telefono` varchar(25) NOT NULL,
+  `estado` int(10) NOT NULL,
+  `fechae` timestamp NOT NULL ,
+  `fechas` timestamp NOT NULL  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `colaboradores`
 --
 
-INSERT INTO `colaboradores` (`id`, `nombre`, `apellido`, `documento`, `cargo`, `telefono`) VALUES
-(7, 'juan', 'ortiz mena', '1278912328', 1, '3225432346'),
-(8, 'felipe', 'mendoza aguilar', '1268912328', 1, '3215430346'),
-(9, 'esteven', 'mendez mena', '1208962328', 1, '3226430341'),
-(10, 'juan', 'ortiz mena', '1278912329', 2, '3235662346'),
-(11, 'gimena', 'herrera mena', '1278912307', 2, '3135662346'),
-(12, 'laura', 'perez hinestrosa', '1273912320', 2, '3245662340');
+INSERT INTO `colaboradores` (`id`, `nombre`, `apellido`, `documento`, `cargo`, `telefono`,`estado`) VALUES
+(7, 'juan', 'ortiz mena', '1278912328', 1, '3225432346', 1),
+(8, 'felipe', 'mendoza aguilar', '1268912328', 1, '3215430346', 1),
+(9, 'esteven', 'mendez mena', '1208962328', 1, '3226430341', 1),
+(10, 'juan', 'ortiz mena', '1278912329', 2, '3235662346', 1),
+(11, 'gimena', 'herrera mena', '1278912307', 2, '3135662346', 1),
+(12, 'laura', 'perez hinestrosa', '1273912320', 2, '3245662340',1);
 
 -- --------------------------------------------------------
 
@@ -111,29 +123,32 @@ CREATE TABLE `estudiante` (
   `identificacion` varchar(11) NOT NULL,
   `carrera` int(10) NOT NULL,
   `correo` varchar(50) NOT NULL,
-  `telefono` varchar(11) NOT NULL
+  `telefono` varchar(11) NOT NULL,
+  `estado` int(10) NOT NULL,
+  `fechae` timestamp NOT NULL ,
+  `fechas` timestamp NOT NULL  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `estudiante`
 --
 
-INSERT INTO `estudiante` (`id`, `nombre`, `apellido`, `identificacion`, `carrera`, `correo`, `telefono`) VALUES
-(1, 'juan esteban', 'mena mena', '1078912328', 1, 'jemena@miuniclaretian.edu.co', '3225432345'),
-(2, 'juan camilo', 'aguirre cortes', '1189023439', 1, 'jcaguirre@miuniclaretian.edu.co', '3218928990'),
-(3, 'maria camila', 'mena urrego', '1092876288', 1, 'mcmena@miuniclaretian.edu.co', '3145678902'),
-(4, 'esteban', 'urrego mena', '1890897223', 1, 'esurrego@miuniclaretian.edu.co', '3156728909'),
-(5, 'paola ', 'cortes velasques', '1567890213', 1, 'pacortes@miuniclaretian.edu.co', '3146752890'),
-(6, 'esperanza ', 'gomez mena', '1234567890', 2, 'esgomez@miuniclaretian.edu.co', '3124567890'),
-(7, 'juan ', 'perez cortes', '1342541230', 2, 'juperez@miuniclaretian.edu.co', '3167893212'),
-(8, 'camila fernanda', 'inestrosa guebara', '1045678980', 2, 'cfinestrosa@miuniclaretian.edu.co', '3224567890'),
-(9, 'miguel', 'cataño perez', '1987654321', 2, 'micataño@miuniclaretian.edu.co', '3008792134'),
-(10, 'nathaly yineth ', 'cortes mena', '1209098910', 2, 'nycortes@miuniclaretian.edu.co', '3136662200'),
-(11, 'judith ', 'gomez mena', '1982323112', 3, 'jugomez@miuniclaretian.edu.co', '3009876534'),
-(12, 'milena ster ', 'muñoz cortes', '1022678902', 3, 'msmuñoz@miuniclaretian.edu.co', '3042139033'),
-(13, 'fernanda', 'sepulveda guebara', '1067878980', 3, 'fesepulveda@miuniclaretian.edu.co', '3224567891'),
-(14, 'miguel angel', 'cataño suarez', '1977654321', 3, 'micataño@miuniclaretian.edu.co', '3008792136'),
-(15, 'paolo ', 'zuñiga mena', '1309098910', 3, 'pasuñiga@miuniclaretian.edu.co', '3136662201');
+INSERT INTO `estudiante` (`id`, `nombre`, `apellido`, `identificacion`, `carrera`, `correo`, `telefono`,`estado`) VALUES
+(1, 'juan esteban', 'mena mena', '1078912328', 1, 'jemena@miuniclaretian.edu.co', '3225432345',1),
+(2, 'juan camilo', 'aguirre cortes', '1189023439', 1, 'jcaguirre@miuniclaretian.edu.co', '3218928990',1),
+(3, 'maria camila', 'mena urrego', '1092876288', 1, 'mcmena@miuniclaretian.edu.co', '3145678902',1),
+(4, 'esteban', 'urrego mena', '1890897223', 1, 'esurrego@miuniclaretian.edu.co', '3156728909',1),
+(5, 'paola ', 'cortes velasques', '1567890213', 1, 'pacortes@miuniclaretian.edu.co', '3146752890',1),
+(6, 'esperanza ', 'gomez mena', '1234567890', 2, 'esgomez@miuniclaretian.edu.co', '3124567890',1),
+(7, 'juan ', 'perez cortes', '1342541230', 2, 'juperez@miuniclaretian.edu.co', '3167893212',1),
+(8, 'camila fernanda', 'inestrosa guebara', '1045678980', 2, 'cfinestrosa@miuniclaretian.edu.co', '3224567890',1),
+(9, 'miguel', 'cataño perez', '1987654321', 2, 'micataño@miuniclaretian.edu.co', '3008792134',1),
+(10, 'nathaly yineth ', 'cortes mena', '1209098910', 2, 'nycortes@miuniclaretian.edu.co', '3136662200',1),
+(11, 'judith ', 'gomez mena', '1982323112', 3, 'jugomez@miuniclaretian.edu.co', '3009876534',1),
+(12, 'milena ster ', 'muñoz cortes', '1022678902', 3, 'msmuñoz@miuniclaretian.edu.co', '3042139033',1),
+(13, 'fernanda', 'sepulveda guebara', '1067878980', 3, 'fesepulveda@miuniclaretian.edu.co', '3224567891',1),
+(14, 'miguel angel', 'cataño suarez', '1977654321', 3, 'micataño@miuniclaretian.edu.co', '3008792136',1),
+(15, 'paolo ', 'zuñiga mena', '1309098910', 3, 'pasuñiga@miuniclaretian.edu.co', '3136662201',1);
 
 --
 -- Índices para tablas volcadas
@@ -153,6 +168,9 @@ ALTER TABLE `carrera`
 
 ALTER TABLE `cargo`
   ADD PRIMARY KEY (`id_cargo`);
+
+  ALTER TABLE `estado_ingreso`
+  ADD PRIMARY KEY (`id_estado`);
 --
 -- Indices de la tabla `colaboradores`
 --
@@ -202,8 +220,14 @@ COMMIT;
 ALTER TABLE colaboradores ADD FOREIGN KEY(cargo)
 REFERENCES cargo(id_cargo);
 
+ALTER TABLE colaboradores ADD FOREIGN KEY(estado)
+REFERENCES estado_ingreso(id_estado);
+
 ALTER TABLE estudiante ADD FOREIGN KEY(carrera)
 REFERENCES carrera(id_carrera);
+
+ALTER TABLE estudiante ADD FOREIGN KEY(estado)
+REFERENCES estado_ingreso(id_estado);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

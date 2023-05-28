@@ -2,37 +2,43 @@
 
 require_once '../database/conexion.php';
 
-// $consulta=$DB_con->prepare('SELECT email FROM cliente');
-// $consulta->execute();
-// $emails=$consulta->fetchAll(PDO::FETCH_ASSOC);
 
-if(isset($_POST["nombre"])){
+if(isset($_POST["agregar"])){
+    $estado = 1;
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
     $documento = $_POST["documento"];
-    $cargo = $_POST["cargo"];
+    $id_cargo = $_POST["cargo"];
     $telefono = $_POST["telefono"];
 
-    $validar = "SELECT * FROM cliente WHERE documento = '$documento' ";
-    $validando = $DB_con->prepare($validar);
-    $validando->execute();
+     $validar = "SELECT * FROM colaboradores WHERE documento = '$documento' ";
+     $validando = $DB_con->prepare($validar);
+     $validando->execute();
 
-    $validar1 = "SELECT * FROM cliente WHERE telefono = '$telefono' ";
-    $validando1 = $DB_con->prepare($validar1);
-    $validando1->execute();
+    $validar1 = "SELECT * FROM colaboradores WHERE telefono = '$telefono' ";
+     $validando1 = $DB_con->prepare($validar1);
+     $validando1->execute();
 
-    if($validando->rowCount() > 0){
+     if($validando->rowCount() > 0){
         session_start();
-        $_SESSION["documentoRepetido"] = "documento repetido";
-        header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$cargo."&tel=".$telefono);
-    }elseif($validando1->rowCount() > 0){
+         $_SESSION["documentoRepetido"] = "documento repetido";
+        header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono."&estado".$estado);
+     }elseif($validando1->rowCount() > 0){
         session_start();
         $_SESSION["telefonoRepetido"] = "telefono repetido";
-        header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$cargo."&tel=".$telefono);
+       header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono."&estado".$estado);
     }else{
-        try{
-            $query = $DB_con->prepare("INSERT INTO colaboradores(nombre, apellido, documento, cargo, telefono) VALUES(?, ?, ?, ?, ?)");// Traduzco mi petición
-            $guardar = $query->execute([$nombre, $apellido, $documento, $cargo, $telefono]); //Ejecuto mi petición
+         try{
+
+            $agregar=$DB_con->prepare('INSERT INTO colaboradores(nombre, apellido, documento, cargo, telefono,estado) VALUES(:nombre, :apellido, :documento, :cargo, :telefono,:estado)');
+            
+            $agregar->bindParam(':nombre', $nombre);
+            $agregar->bindParam(':apellido', $apellido);
+            $agregar->bindParam(':documento', $documento);
+            $agregar->bindParam(':cargo', $id_cargo);
+            $agregar->bindParam(':telefono', $telefono);
+            $agregar->bindParam(':estado', $estado);
+            $guardar = $agregar->execute();
             if ($guardar) {
                 session_start();
                 $_SESSION['exitoso'] = 'registro';
@@ -45,7 +51,7 @@ if(isset($_POST["nombre"])){
         } catch (\Throwable $th) {
             session_start();
             $_SESSION["colaboradoRepetido"] = "colaborador repetido";
-            header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$cargo."&tel=".$telefono);
+            header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono);
         }
     }
 

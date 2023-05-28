@@ -1,16 +1,16 @@
 <?php
-
+        session_start();
         require './database/conexion.php'; 
 
         $consulta=$DB_con->prepare('SELECT * FROM administrador WHERE id=:id');
-        $consulta->bindParam(':id', $_SESSION['id_usuario']);
+        $consulta->bindParam(':id', $_SESSION['id']);
         $consulta->execute();
         $cliente=$consulta->fetch(PDO::FETCH_ASSOC);  
 ?>
 <header>
 <nav class="navbar navbar-expand-md border-bottom border-primary">
         <div class="container-fluid">
-            <a href="./tabla.php" class="navbar-brand">Control De Acceso</a>
+            <a href="./administracion.php" class="navbar-brand">Control De Acceso</a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#MenuNavegacion">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -26,7 +26,7 @@
                     <li class="dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <label for="" class="centro"><?php echo $_SESSION["usuario"] ?></label>
+                            <label for="" class="centro"><?php echo $cliente["nombre"] ?></label>
                         </a>
                         <div class=" transparentes">
                             <ul class="dropdown-menu" id="menu">

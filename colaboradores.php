@@ -1,11 +1,25 @@
 <?php
         include './Database/conexion.php';
 
-        $consulta = "SELECT * FROM colaboradores";
-
+        if(!isset($_POST["cargo"])){
+        $consulta = "SELECT colaboradores.id, colaboradores.nombre, colaboradores.apellido, colaboradores.documento, cargo.nombre as cargo, colaboradores.telefono FROM colaboradores
+        INNER JOIN cargo ON colaboradores.cargo =  cargo.id_cargo";
         $consulta1 = $DB_con->prepare($consulta);
         $consulta1->execute();
+        }else{
+        $prueba = $_POST["cargo"];
+        $consulta = "SELECT colaboradores.id, colaboradores.nombre, colaboradores.apellido, colaboradores.documento, cargo.nombre as cargo, colaboradores.telefono FROM colaboradores
+        INNER JOIN cargo ON colaboradores.cargo =  cargo.id_cargo WHERE cargo = :cargo";
+        $consulta1 = $DB_con->prepare($consulta);
+        $consulta1 -> bindParam(":cargo",$prueba);
+        $consulta1->execute();
+        }
 
+        $consultar = "SELECT * FROM cargo";
+        $consulta2 = $DB_con->prepare($consultar);
+        $consulta2->execute();
+
+        $cargos = $consulta2->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +33,10 @@
     <link rel="stylesheet" href="./css/header.css">
     <!-- link estilos de caja y modal-->
     <link rel="stylesheet" href="./css/caja.css">
+    <!-- validaciones de java script -->
+    <script type='text/javascript' src="./validaciones/validaciones.js"></script>
+    <!-- link de sweetalert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Control De Acceso|Colaboradores</title>
 </head>
 <body>
@@ -30,9 +48,19 @@
     <!-- Fin de encabezado -->
    <div class="caja" >
         <div class="posicion">
-            <select name="cargo" id="cargo">
-                <option value="">Seleccione</option>
+        <form action="" method="post">
+            <select name="cargo" id="" onchange="cambio()">
+                <option value="" selected>Seleccione</option>
+                <?php
+                    foreach ($cargos as $key => $cargo){     
+                ?>
+                <option value="<?php echo $cargo["id_cargo"]; ?>"><?php echo $cargo["nombre"]; ?></option>
+                <?php
+                    }                
+                ?>
             </select>
+            <button type="submit" hidden id="buton"></button>
+        </form>
         </div>
         <div class="posiciom">
             <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#agregar_colaboradores"> Agregar Colaborador</button>
@@ -90,25 +118,34 @@
                     <div class="row">
                         <div class="col-6">
                             <label for="nombre">Nombres</label>
-                            <input type="text" name="nombre" id="nombre">
+                            <input type="text" name="nombre" id="nombre" onchange="nombre1()">
                         </div>
                         <div class="col-6">
                             <label for="apellido">Apellidos</label>
-                            <input type="text" name="apellido" id="apellido">
+                            <input type="text" name="apellido" id="apellido" onchange="apellido1()">
                         </div>
                         <div class="col-12 mt-3">
                             <label for="documento">Numero de documento</label>
-                            <input type="text" name="documento" id="documento">
+                            <input type="text" name="documento" id="documento" onchange="cedula1()">
                         </div>
                         <div class="col-6 mt-3">
                             <label for="cargo">Cargo</label>
-                            <select name="cargo" id="cargo">
-                            </select>
-                        </div>
+                                <select name="cargo" id="cargo">
+                                    <option value="" selected>Seleccione</option>
+                                    <?php
+                                        foreach ($cargos as $key => $cargo){     
+                                    ?>
+                                    <option value="<?php echo $cargo["id_cargo"]; ?>"><?php echo $cargo["nombre"]; ?></option>
+                                    <?php
+                                        }                
+                                    ?>
+                                </select>
+                        </div> 
                         <div class="col-6 mt-3">
                             <label for="telefono">Telefono</label>
-                            <input type="text" name="telefono" id="telefono">
+                            <input type="text" name="telefono" id="telefono" onchange="telefono1()">
                         </div>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
@@ -175,7 +212,10 @@ if (isset($_SESSION['telefonoRepetido'])) {
     </script>";
     unset($_SESSION['telefonoRepetido']);
 }
-
-
-
 ?>
+<script> 
+        function cambio(){
+            document.getElementById('buton').click();
+        }
+
+</script>
