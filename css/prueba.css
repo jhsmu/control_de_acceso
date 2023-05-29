@@ -1,0 +1,32 @@
+.marco {
+    width: 500px;
+    height: 500px;
+    position: relative;
+    background: #444;
+}
+
+.carnet {
+    position: absolute;
+}
+.parrafo{
+    position: absolute;
+    top: 157px;
+    left: 100px;
+}
+.parrafo1{
+    position: absolute;
+    top: 175px;
+    left: 127px;
+}
+.parrafo2{
+    position: absolute;
+    top: 192px;
+    left: 100px;
+}
+.carnet .posicion img{
+    width: 300px;
+    height: 350px;
+}
+p{
+    color: #000;
+}
