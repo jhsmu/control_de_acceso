@@ -35,11 +35,11 @@
         if ($cambio->execute()) {
             session_start();
             $_SESSION['error'] = 'registro';
-            header("location: ./index.php");
+            header("location: ../index.php");
             } else {
                 session_start();
                 $_SESSION['error_1'] = 'registro';
-                header("location: ./index.php");
+                header("location: ../index.php");
             }
     }
 
