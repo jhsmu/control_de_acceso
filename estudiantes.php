@@ -35,17 +35,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- link de boostrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<!-- Bootstrap-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
+     <!-- DataTable -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
     <!-- link de estilo de encabezado -->
     <link rel="stylesheet" href="./css/header.css">
     <!-- link estilos de caja y modal-->
-    <link rel="stylesheet" href="./css/caja.css">
+    <link rel="stylesheet" href="./css/caja.css">    
     <!-- validaciones de java script -->
     <script type='text/javascript' src="./validaciones/validaciones.js"></script>
     <!-- link de sweetalert -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- script de datatables en bootstrap -->
     <title>Control De Acceso|Estudiantes</title>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 </head>
 <body>
     
@@ -70,14 +74,19 @@
             <button type="submit" hidden id="buton"></button>
             </form>
         </div>
-        <div class="posiciom">
+        <div class="todo">
+            <div class="posiciom">
             <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#agregar_estudiante"> Agregar Estudiante</button>
+            </div>
+            <div class="posiciom1">
+                <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#generar_qr"> Generar Codigo QR</button>
+            </div>
         </div>
 
    </div>
     <!-- Inicio de tabla -->
     <div class="container">
-     <table class="table">
+     <table id="example" class="table table-striped table-bordered" style="width:100%">
 
         <thead>
             <tr>
@@ -174,8 +183,45 @@
         </div>
     </div>
     </div>
+        <!-- fin del modal agregar colaborador -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <!-- Inicio de modal Generar Codigo QR -->
+    <div class="modal" id="generar_qr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Generar Codigo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <select name="carrera" id="carrera">
+                            <option value="">Seleccione</option>
+                            <?php
+                                foreach ($carreras as $key => $carrera){     
+                            ?>
+                            <option value="<?php echo $carrera["id_carrera"]; ?>"><?php echo $carrera["nombre"]; ?></option>
+                            <?php
+                                }                
+                            ?>
+        </select>        
+
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Generar</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- DataTable -->
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
 </body>
 </html>
 <?php
@@ -246,5 +292,13 @@ if (isset($_SESSION['correoRepetido'])) {
         function cambio(){
             document.getElementById('buton').click();
         }
-
+</script>
+<script>
+    $(document).ready(function () {
+    $('#example').DataTable({
+        "language": {
+                        "url":"//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+                    }
+    });
+});
 </script>

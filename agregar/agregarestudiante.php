@@ -3,7 +3,7 @@
 require_once '../database/conexion.php';
 
 if(isset($_POST["agregar"])){
-    $estado = 1;
+    $estado = 3;
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
     $identificacion = $_POST["identificacion"];
