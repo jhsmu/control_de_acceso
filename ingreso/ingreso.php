@@ -52,11 +52,14 @@
             $id = $ingresoC['id'];
         }
 
-        $query = $DB_con->prepare("INSERT INTO ingreso(id_colaboradores,fechaingreso) VALUES(?, ?)");// Traduzco mi petición
-        $guardar = $query->execute([$id, $fechaingreso = date("Y-m-d H:i:s")]);
+        // Obtener la hora actual
+        $hora_actual = new DateTime();
 
-        $query2=$DB_con->prepare('UPDATE colaboradores SET id_estado=? WHERE id=?');
-        $guardar2 = $query2->execute([$estadoI, $id]);
+        // Restar 5 horas
+        $hora_actual->modify('-7 hours');
+
+        $query = $DB_con->prepare("INSERT INTO ingreso(id_colaboradores,fechaingreso) VALUES(?, ?)");// Traduzco mi petición
+        $guardar = $query->execute([$id, $hora_resta = $hora_actual->format('Y-m-d H:i:s')]);
 
             if ($guardar2) {
                 session_start();

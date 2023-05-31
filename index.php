@@ -1,14 +1,3 @@
-<?php
-
-include './Database/conexion.php';
-
-
-$consultar = "SELECT * FROM estado_ingreso";
-$consulta2 = $DB_con->prepare($consultar);
-$consulta2->execute();
-
-
-?>
 <!DOCTYPE html>
 <html>
   <head>
