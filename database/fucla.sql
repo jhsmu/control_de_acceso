@@ -215,19 +215,11 @@ ALTER TABLE `ingreso`
   MODIFY `id_ingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 COMMIT;
 
---FOREIGN KEYS
-
 ALTER TABLE colaboradores ADD FOREIGN KEY(cargo)
 REFERENCES cargo(id_cargo);
 
 ALTER TABLE estudiante ADD FOREIGN KEY(carrera)
 REFERENCES carrera(id_carrera);
-
-ALTER TABLE colaboradores ADD FOREIGN KEY(id_estado)
-REFERENCES estado_ingreso(id_estado);
-
-ALTER TABLE estudiante ADD FOREIGN KEY(id_estado)
-REFERENCES estado_ingreso(id_estado);
 
 ALTER TABLE ingreso ADD FOREIGN KEY(id_colaboradores)
 REFERENCES colaboradores(id);
