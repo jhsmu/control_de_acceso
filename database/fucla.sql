@@ -78,10 +78,6 @@ INSERT INTO `cargo` (`id_cargo`, `nombre`) VALUES
 (1, 'administrativo'),
 (2, 'docente');
 
-INSERT INTO `estado_ingreso` (`id_estado`, `nombre_estado`) VALUES
-(1, 'Entrada'),
-(2, 'Salida'),
-(3,'sin cambio');
 
 
 -- --------------------------------------------------------
