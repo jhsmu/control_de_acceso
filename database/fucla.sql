@@ -118,7 +118,7 @@ CREATE TABLE `estudiante` (
   `identificacion` varchar(11) NOT NULL,
   `carrera` int(10) NOT NULL,
   `correo` varchar(50) NOT NULL,
-  `telefono` varchar(11) NOT NULL,
+  `telefono` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
