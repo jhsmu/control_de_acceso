@@ -3,7 +3,6 @@
 require_once '../database/conexion.php';
 
 if(isset($_POST["agregar"])){
-    $estado = 3;
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
     $identificacion = $_POST["identificacion"];
@@ -38,14 +37,13 @@ if(isset($_POST["agregar"])){
     }else{
          try{
             
-            $agregar=$DB_con->prepare('INSERT INTO estudiante(nombre, apellido, identificacion, carrera,correo, telefono,estado) VALUES(:nombre, :apellido, :identificacion, :carrera,:correo, :telefono,:estado)');
+            $agregar=$DB_con->prepare('INSERT INTO estudiante(nombre, apellido, identificacion, carrera,correo, telefono) VALUES(:nombre, :apellido, :identificacion, :carrera,:correo, :telefono)');
             $agregar->bindParam(':nombre', $nombre);
             $agregar->bindParam(':apellido', $apellido);
             $agregar->bindParam(':documento', $identificacion);
             $agregar->bindParam(':carrera', $id_carrera);
             $agregar->bindParam(':correo', $correo);
             $agregar->bindParam(':telefono', $telefono);
-            $agregar->bindParam(':estado', $estado);
             $guardar = $agregar->execute();
             if ($guardar) {
                 session_start();

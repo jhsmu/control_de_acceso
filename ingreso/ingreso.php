@@ -50,7 +50,6 @@
 
         foreach($ingresosC as $key => $ingresoC){
             $id = $ingresoC['id'];
-            $colaboradorEstado = $ingresoC['id_estado'];
         }
 
         $query = $DB_con->prepare("INSERT INTO ingreso(id_colaboradores,fechaingreso) VALUES(?, ?)");// Traduzco mi petición
