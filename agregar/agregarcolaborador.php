@@ -10,24 +10,24 @@ if(isset($_POST["agregar"])){
     $id_cargo = $_POST["cargo"];
     $telefono = $_POST["telefono"];
 
-     $validar = "SELECT * FROM colaboradores WHERE documento = '$documento' ";
-     $validando = $DB_con->prepare($validar);
-     $validando->execute();
+    $validar = "SELECT * FROM colaboradores WHERE documento = '$documento' ";
+    $validando = $DB_con->prepare($validar);
+    $validando->execute();
 
     $validar1 = "SELECT * FROM colaboradores WHERE telefono = '$telefono' ";
-     $validando1 = $DB_con->prepare($validar1);
-     $validando1->execute();
+    $validando1 = $DB_con->prepare($validar1);
+    $validando1->execute();
 
-     if($validando->rowCount() > 0){
+    if($validando->rowCount() > 0){
         session_start();
-         $_SESSION["documentoRepetido"] = "documento repetido";
+        $_SESSION["documentoRepetido"] = "documento repetido";
         header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono."&estado".$estado);
-     }elseif($validando1->rowCount() > 0){
+    }elseif($validando1->rowCount() > 0){
         session_start();
         $_SESSION["telefonoRepetido"] = "telefono repetido";
-       header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono."&estado".$estado);
+        header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono."&estado".$estado);
     }else{
-         try{
+        try{
 
             $agregar=$DB_con->prepare('INSERT INTO colaboradores(nombre, apellido, documento, cargo, telefono) VALUES(:nombre, :apellido, :documento, :cargo, :telefono)');
             
@@ -52,5 +52,4 @@ if(isset($_POST["agregar"])){
             header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono);
         }
     }
-
 }

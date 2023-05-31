@@ -3,13 +3,10 @@
     require_once '../database/conexion.php';
 
     if(isset($_POST['ingresar'])){
-        $estadoI = 1;
-        $estadoS = 2;
-        $estado = 3;
+        $pendiente = 1;
+        $finalizado = 0;
         $identificacion = $_POST['indentificacion'];
         $estadoIngreso = $_POST['estado'];
-
-
 
         $consultar = "SELECT * FROM colaboradores WHERE documento = $identificacion";
         $consulta2 = $DB_con->prepare($consultar);
@@ -26,16 +23,43 @@
         // Restar 5 horas
         $hora_actual->modify('-7 hours');
 
-        $query = $DB_con->prepare("INSERT INTO ingreso(id_colaboradores,fechaingreso) VALUES(?, ?)");// Traduzco mi petición
-        $guardar = $query->execute([$id, $hora_resta = $hora_actual->format('Y-m-d H:i:s')]);
+        $consultarC = "SELECT * FROM ingreso WHERE id_colaboradores = $id";
+        $consulta = $DB_con->prepare($consultarC);
+        $consulta->execute();
+        $colaboradores = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-            if ($guardar2) {
-                session_start();
-                $_SESSION['error'] = 'registro';
-                header("location: ../index.php");
-                } else {
+        foreach($colaboradores as $key => $colaborador){
+            $cambio = $colaborador['ingresoEstado'];
+        }
+
+            if ($estadoIngreso == 1) {
+                $query = $DB_con->prepare("INSERT INTO ingreso(id_colaboradores,fechaingreso, ingresoEstado) VALUES(?, ?, ?)");// Traduzco mi petición
+                $guardar = $query->execute([$id, $hora_resta = $hora_actual->format('Y-m-d H:i:s'), $pendiente]);
+
+                if ($guardar) {
                     session_start();
-                    $_SESSION['error_1'] = 'registro';
+                    $_SESSION['error'] = 'registro';
                     header("location: ../index.php");
+                    } else {
+                        session_start();
+                        $_SESSION['error_1'] = 'registro';
+                        header("location: ../index.php");
+                    }
+
+            } else{
+                    if ($pendiente == $cambio){
+                        $query2 = $DB_con->prepare("UPDATE ingreso SET fechasalida=?, ingresoEstado=? WHERE id_colaboradores=?");// Traduzco mi petición
+                        $actualizar = $query2->execute([$hora_resta = $hora_actual->format('Y-m-d H:i:s'), $finalizado, $id]);
+                    }
                 }
-    }
+        
+                if ($actualizar) {
+                    session_start();
+                    $_SESSION['error'] = 'registro';
+                    header("location: ../index.php");
+                    } else {
+                        session_start();
+                        $_SESSION['error_1'] = 'registro';
+                        header("location: ../index.php");
+                    }
+            }
