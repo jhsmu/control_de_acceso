@@ -78,8 +78,6 @@ INSERT INTO `cargo` (`id_cargo`, `nombre`) VALUES
 (1, 'administrativo'),
 (2, 'docente');
 
-
-
 -- --------------------------------------------------------
 
 --
