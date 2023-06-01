@@ -20,8 +20,8 @@
         <input type="text" name="indentificacion" placeholder="Digite su Documento">
         <select name="estado" id="">
             <option value="" selected>Seleccione</option>
-            <option value="1" selected>Entrada</option>
-            <option value="2" selected>Salida</option>
+            <option value="1" >Entrada</option>
+            <option value="0" >Salida</option>
             </select>
         <button type="submit" name="ingresar">Ingreso</button>
         <a href="./loginadmin.php">Administrador</a><br>
