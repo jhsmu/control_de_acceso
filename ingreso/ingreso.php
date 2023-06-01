@@ -46,7 +46,6 @@
         $consulta = $DB_con->prepare($consultarC);
         $consulta->execute();
         $colaboradores = $consulta->fetch(PDO::FETCH_ASSOC);        
-        if ($identificacion == $id) {
             if ($estadoIngreso == 1) {
                 $query = $DB_con->prepare("INSERT INTO ingreso(id_colaboradores,fechaingreso, ingresoEstado) VALUES(?, ?, ?)");// Traduzco mi petición
                 $guardar = $query->execute([$id, $hora_resta = $hora_actual->format('Y-m-d H:i:s'), $pendiente]);
@@ -62,28 +61,25 @@
                     }
 
             } else{
-                    if ($pendiente == $colaboradores){
                         $query2 = $DB_con->prepare("UPDATE ingreso SET fechasalida=?, ingresoEstado=? WHERE id_colaboradores=?");// Traduzco mi petición
-                        $actualizar = $query2->execute([$hora_resta = $hora_actual->format('Y-m-d H:i:s'), $finalizado, $id]);
-                    }
+                        $actualizar = $query2->execute([$hora_resta = $hora_actual->format('Y-m-d H:i:s'), 
+                        $finalizado, $id]);
+                        if ($actualizar) {
+                            session_start();
+                            $_SESSION['error'] = 'registro';
+                            header("location: ../index.php");
+                            } else {
+                                session_start();
+                                $_SESSION['error_1'] = 'registro';
+                                header("location: ../index.php");
+                            }
                 }
-        
-                if ($actualizar) {
-                    session_start();
-                    $_SESSION['error'] = 'registro';
-                    header("location: ../index.php");
-                    } else {
-                        session_start();
-                        $_SESSION['error_1'] = 'registro';
-                        header("location: ../index.php");
-                    }
-            }
+            
         }else{
         $consultarE = "SELECT ingresoEstado FROM ingreso WHERE id_estudiante = $id2";
         $consulta4 = $DB_con->prepare($consultarE);
         $consulta4->execute();
         $estudiantes = $consulta4->fetch(PDO::FETCH_ASSOC);
-        if ($identificacion == $id2) {
             if ($estadoIngreso == 1) {
                 $query3 = $DB_con->prepare("INSERT INTO ingreso(id_estudiante,fechaingreso, ingresoEstado) VALUES(?, ?, ?)");// Traduzco mi petición
                 $guardar2 = $query3->execute([$id2, $hora_resta = $hora_actual->format('Y-m-d H:i:s'), $pendiente]);
@@ -99,22 +95,17 @@
                     }
 
             } else{
-                    if ($pendiente == $estudiantes){
                         $query4 = $DB_con->prepare("UPDATE ingreso SET fechasalida=?, ingresoEstado=? WHERE id_colaboradores=?");// Traduzco mi petición
                         $actualizar2 = $query4->execute([$hora_resta = $hora_actual->format('Y-m-d H:i:s'), $finalizado, $id2]);
-                    }
+                        if ($actualizar2) {
+                            session_start();
+                            $_SESSION['error'] = 'registro';
+                            header("location: ../index.php");
+                            } else {
+                                session_start();
+                                $_SESSION['error_1'] = 'registro';
+                                header("location: ../index.php");
+                            }
                 }
-        
-                if ($actualizar2) {
-                    session_start();
-                    $_SESSION['error'] = 'registro';
-                    header("location: ../index.php");
-                    } else {
-                        session_start();
-                        $_SESSION['error_1'] = 'registro';
-                        header("location: ../index.php");
-                    }
         }
-        }
-
         }
