@@ -23,7 +23,7 @@
             <option value="1" >Entrada</option>
             <option value="0" >Salida</option>
             </select>
-        <button type="submit" name="ingresar">Ingreso</button>
+        <button class="boton" type="submit" name="ingresar">Ingreso</button>
         <a href="./loginadmin.php">Administrador</a><br>
         <a href="#">Lectura de ****</a>
       </form>
@@ -33,7 +33,7 @@
 </html>
 <?php 
 
-if (isset($_SESSION["error"])) {
+if (isset($_SESSION["Datos_incorrectos"])) {
   echo ('<script>Swal.fire({
       title: "Datos incorrectos",
       text: "Los datos ingresados son incorrectos, por favor verifique",
@@ -42,14 +42,22 @@ if (isset($_SESSION["error"])) {
   </script>');
   session_destroy();
 }
-if (isset($_SESSION["error_1"])) {
+if (isset($_SESSION["exito"])) {
   echo ('<script>Swal.fire({
-      title: "Datos incorrectos",
-      text: "Los datos ingresados son incorrectos",
-      icon: "info" 
+      title: "Bienbenido",
+      text: "Al campus univercitarios",
+      icon: "succes" 
   });
   </script>');
   session_destroy();
 }
-
+if (isset($_SESSION["errorRegistro"])) {
+  echo ('<script>Swal.fire({
+      title: "Datos incorrectos",
+      text: "Los datos ingresados son incorrectos",
+      icon: "error" 
+  });
+  </script>');
+  session_destroy();
+}
 ?>
