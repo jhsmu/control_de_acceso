@@ -37,11 +37,23 @@ if (isset($_POST['ingresar'])) {
         }
     }
 
+    $prueba = "SELECT * FROM ingreso";
+    $prueba1 = $DB_con->prepare($prueba);
+    $prueba1->execute();
+    $ingri = $prueba1 ->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach($ingri as $key => $ingri1){
+        if($id == $ingri1["id_colaboradores"] || $id2 == $ingri1["id_estudiante"]){
+            $estadoI = $ingri1['ingresoEstado'];
+        }
+    }
+
     $hora_actual = new DateTime();
     $hora_actual->modify('-7 hours');
     $hora_resta = $hora_actual->format('Y-m-d H:i:s');
 
     if (isset($id)) {
+      if($estadoI != $estadoIngreso){
         $consultarC = "SELECT ingresoEstado FROM ingreso WHERE id_colaboradores = :id";
         $consulta = $DB_con->prepare($consultarC);
         $consulta->bindValue(':id', $id);
@@ -83,7 +95,13 @@ if (isset($_POST['ingresar'])) {
                 header("location: ../index.php");
             }
         }
+      }else{
+        session_start();
+        $_SESSION['error_1'] = 'registro';
+        header("location: ../index.php");
+      }
     } else {
+        if($estadoI != $estadoIngreso){
         $consultarE = "SELECT ingresoEstado FROM ingreso WHERE id_estudiante = :id2";
         $consulta4 = $DB_con->prepare($consultarE);
         $consulta4->bindValue(':id2', $id2);
@@ -91,6 +109,7 @@ if (isset($_POST['ingresar'])) {
         $estudiantes = $consulta4->fetch(PDO::FETCH_ASSOC);
 
         if ($estadoIngreso == 1) {
+
             $query3 = $DB_con->prepare("INSERT INTO ingreso(id_estudiante, fechaingreso, ingresoEstado) VALUES(:id2, :fechaingreso, :ingresoEstado)");
             $query3->bindValue(':id2', $id2);
             $query3->bindValue(':fechaingreso', $hora_resta);
@@ -108,6 +127,7 @@ if (isset($_POST['ingresar'])) {
                 $_SESSION['error_1'] = 'registro';
                 header("location: ../index.php");
             }
+         
         } else {
             $query4 = $DB_con->prepare("UPDATE ingreso SET fechasalida = :fechasalida, ingresoEstado = :ingresoEstado WHERE id_estudiante = :id2");
             $query4->bindValue(':fechasalida', $hora_resta);
@@ -125,5 +145,10 @@ if (isset($_POST['ingresar'])) {
                 header("location: ../index.php");
             }
         }
+    }else{
+        session_start();
+        $_SESSION['error_1'] = 'registro';
+        header("location: ../index.php");
     }
+   }
 }
