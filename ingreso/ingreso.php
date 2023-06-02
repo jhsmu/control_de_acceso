@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../database/conexion.php';
 
 if (isset($_POST['ingresar'])) {
@@ -70,12 +71,12 @@ if (isset($_POST['ingresar'])) {
             if ($guardar) {
                 $lastInsertId = $DB_con->lastInsertId(); // Obtener la última ID insertada
                 session_start();
-                $_SESSION['error'] = 'registro';
                 $_SESSION['lastInsertId'] = $lastInsertId; // Guardar la última ID insertada en la sesión
+                $_SESSION['exito'] = 'exito al registrar';
                 header("location: ../index.php");
             } else {
                 session_start();
-                $_SESSION['error_1'] = 'registro';
+                $_SESSION['errorRegistro'] = 'error al registrar';
                 header("location: ../index.php");
             }
         } else {
@@ -87,17 +88,17 @@ if (isset($_POST['ingresar'])) {
 
             if ($actualizar) {
                 session_start();
-                $_SESSION['error'] = 'registro';
+                $_SESSION['exito'] = 'registro';
                 header("location: ../index.php");
             } else {
                 session_start();
-                $_SESSION['error_1'] = 'registro';
+                $_SESSION['errorRegistro'] = 'error al registrar';
                 header("location: ../index.php");
             }
         }
       }else{
         session_start();
-        $_SESSION['error_1'] = 'registro';
+        $_SESSION['errorRegistro'] = 'error al registrar';
         header("location: ../index.php");
       }
     } else {
@@ -119,12 +120,12 @@ if (isset($_POST['ingresar'])) {
             if ($guardar2) {
                 $lastInsertId = $DB_con->lastInsertId(); // Obtener la última ID insertada
                 session_start();
-                $_SESSION['error'] = 'registro';
+                $_SESSION['exito'] = 'exito al registrar';
                 $_SESSION['lastInsertId'] = $lastInsertId; // Guardar la última ID insertada en la sesión
                 header("location: ../index.php");
             } else {
                 session_start();
-                $_SESSION['error_1'] = 'registro';
+                $_SESSION['errorRegistro'] = 'error al registrar';
                 header("location: ../index.php");
             }
          
@@ -137,17 +138,17 @@ if (isset($_POST['ingresar'])) {
 
             if ($actualizar2) {
                 session_start();
-                $_SESSION['error'] = 'registro';
+                $_SESSION['exito'] = 'exito al registrar';
                 header("location: ../index.php");
             } else {
                 session_start();
-                $_SESSION['error_1'] = 'registro';
+                $_SESSION['errorRegistro'] = 'error al registrar';
                 header("location: ../index.php");
             }
         }
     }else{
         session_start();
-        $_SESSION['error_1'] = 'registro';
+        $_SESSION['errorRegistro'] = 'error al registrar';
         header("location: ../index.php");
     }
    }

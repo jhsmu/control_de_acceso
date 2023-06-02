@@ -34,30 +34,33 @@
 <?php 
 
 if (isset($_SESSION["Datos_incorrectos"])) {
-  echo ('<script>Swal.fire({
-      title: "Datos incorrectos",
-      text: "Los datos ingresados son incorrectos, por favor verifique",
-      icon: "info" 
-  });
-  </script>');
-  session_destroy();
+  echo "<script>
+  Swal.fire({
+      icon: 'info',
+      title: 'Info',
+      text: 'No se pudo guardado su informacion verifiquela'
+      });
+  </script>";
+  unset($_SESSION['Datos_incorrectos']);
 }
 if (isset($_SESSION["exito"])) {
-  echo ('<script>Swal.fire({
-      title: "Bienbenido",
-      text: "Al campus univercitarios",
-      icon: "succes" 
-  });
-  </script>');
-  session_destroy();
+  echo "<script>
+  Swal.fire({
+      icon: 'success',
+      title: 'Éxito',
+      text: 'estudiante agregado exitosamente' 
+      });
+  </script>";
+  unset($_SESSION['exito']);
 }
 if (isset($_SESSION["errorRegistro"])) {
-  echo ('<script>Swal.fire({
-      title: "Datos incorrectos",
-      text: "Los datos ingresados son incorrectos",
-      icon: "error" 
-  });
-  </script>');
-  session_destroy();
+  echo "<script>
+  Swal.fire({
+      icon: 'info',
+      title: 'Info',
+      text: 'No se pudo guardado su informacion verifiquela'
+      });
+  </script>";
+  unset($_SESSION['errorRegistro']);
 }
 ?>

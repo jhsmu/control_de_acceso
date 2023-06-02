@@ -75,7 +75,7 @@
    </div>
     <div class="container">
          <!-- Inicio de tabla -->
-        <table class="table">
+        <table id="example" class="table table-striped table-bordered" style="width:100%" >
             <thead>
                 <tr>
                     <th>Id</th>
