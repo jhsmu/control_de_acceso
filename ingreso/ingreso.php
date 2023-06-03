@@ -76,7 +76,7 @@ if (isset($_POST['ingresar'])) {
                 header("location: ../index.php");
             } else {
                 session_start();
-                $_SESSION['errorRegistro'] = 'error al registrar';
+                $_SESSION['registroDoble'] = 'Estas intentando entra nuevamente';
                 header("location: ../index.php");
             }
         } else {
@@ -88,17 +88,17 @@ if (isset($_POST['ingresar'])) {
 
             if ($actualizar) {
                 session_start();
-                $_SESSION['exito'] = 'registro';
+                $_SESSION['salida'] = 'salida exitosa';
                 header("location: ../index.php");
             } else {
                 session_start();
-                $_SESSION['errorRegistro'] = 'error al registrar';
+                $_SESSION['registroDoble'] = 'Estas intentando entra nuevamente';
                 header("location: ../index.php");
             }
         }
       }else{
         session_start();
-        $_SESSION['errorRegistro'] = 'error al registrar';
+        $_SESSION['registroDoble'] = 'Estas intentando entra nuevamente';
         header("location: ../index.php");
       }
     } else {
@@ -125,7 +125,7 @@ if (isset($_POST['ingresar'])) {
                 header("location: ../index.php");
             } else {
                 session_start();
-                $_SESSION['errorRegistro'] = 'error al registrar';
+                $_SESSION['registroDoble'] = 'Estas intentando entra nuevamente';
                 header("location: ../index.php");
             }
          
@@ -138,11 +138,11 @@ if (isset($_POST['ingresar'])) {
 
             if ($actualizar2) {
                 session_start();
-                $_SESSION['exito'] = 'exito al registrar';
+                $_SESSION['salida'] = 'salida exitosa';
                 header("location: ../index.php");
             } else {
                 session_start();
-                $_SESSION['errorRegistro'] = 'error al registrar';
+                $_SESSION['registroDoble'] = 'Estas intentando entra nuevamente';
                 header("location: ../index.php");
             }
         }

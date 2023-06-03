@@ -1,3 +1,8 @@
+<?php
+session_start();
+error_reporting(0);
+
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -33,34 +38,36 @@
 </html>
 <?php 
 
-if (isset($_SESSION["Datos_incorrectos"])) {
-  echo "<script>
-  Swal.fire({
-      icon: 'info',
-      title: 'Info',
-      text: 'No se pudo guardado su informacion verifiquela'
-      });
-  </script>";
-  unset($_SESSION['Datos_incorrectos']);
-}
 if (isset($_SESSION["exito"])) {
   echo "<script>
   Swal.fire({
       icon: 'success',
-      title: 'Éxito',
-      text: 'estudiante agregado exitosamente' 
+      title: 'Bienvenido',
+      text: 'Al campus Universitario Uniclaretiana ' 
       });
   </script>";
   unset($_SESSION['exito']);
 }
-if (isset($_SESSION["errorRegistro"])) {
+
+if (isset($_SESSION["salida"])) {
   echo "<script>
   Swal.fire({
-      icon: 'info',
-      title: 'Info',
-      text: 'No se pudo guardado su informacion verifiquela'
+      icon: 'success',
+      title: '¡Oh ya te vas!',
+      text: 'Hasta la proxima' 
       });
   </script>";
-  unset($_SESSION['errorRegistro']);
+  unset($_SESSION['salida']);
+}
+
+if (isset($_SESSION["registroDoble"])) {
+  echo "<script>
+  Swal.fire({
+      icon: 'erro',
+      title: '¡Ups!',
+      text: 'Ya has ingresado al campus, presiona en la opcion de salida'
+      });
+  </script>";
+  unset($_SESSION['registroDoble']);
 }
 ?>

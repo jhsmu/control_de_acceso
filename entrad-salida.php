@@ -32,7 +32,7 @@
         </header>
     <!-- Fin de encabezado -->
     <!-- Inicio de tabla -->
-    <div class="container">
+    <div class="container mt-3">
     <table id="example" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -91,7 +91,7 @@
                     } 
                     ?>
                     <td> <?php echo $ingreso['fechaingreso']; ?> </td>
-                    <td> <?php echo $ingreso['fechaingreso']; ?> </td>
+                    <td> <?php echo $ingreso['fechasalida']; ?> </td>
                 </tr>
             <?php
                 }
