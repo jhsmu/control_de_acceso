@@ -10,17 +10,23 @@ error_reporting(0);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="./css/reloj.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Sistema de Control de Acceso</title>
   </head>
   <body>
 
-  <div class="login-box">
+    <header>
+
+    <?php include './componentes/headeracceso.php' ?>
+
+    </header>
+
+   <div class="login-box">
       <img src="./img/logo-fucla.png" class="avatar" alt="logo fluca">
       <h1>Campus Univerisitario</h1>
       <h3>Uniclaretiana</h3>
       <form method="post" action="./ingreso/ingreso.php">
-        <!-- USERNAME INPUT -->
         <label for="identifiacion">Indentificacion</label>
         <input type="text" name="indentificacion" placeholder="Digite su Documento">
         <select name="estado" id="">
@@ -33,6 +39,9 @@ error_reporting(0);
         <a href="#">Lectura de ****</a>
       </form>
     </div>
+
+
+    <script src="./validaciones/anima.js"></script>
   
   </body>
 </html>
