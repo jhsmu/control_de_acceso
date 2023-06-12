@@ -10,10 +10,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="./css/reloj.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Sistema de Control de Acceso</title>
   </head>
   <body>
+
+  
+  <header>
+
+    <?php include './componentes/headeracceso.php' ?>
+
+  </header>
 
   <div class="login-box">
       <img src="./img/logo-fucla.png" class="avatar" alt="logo fluca">
@@ -26,11 +34,12 @@
         <label for="clave">Contraseña</label>
         <input type="password" name="clave" placeholder="Digite su Contraseña">
         <input type="submit" name="inicio" value="ingresar">
-        <a href="./index.php">Control de Acceso</a><br>
-        <a href="#">Lectura de ****</a>
+        <a href="./controlacceso.php" class="mt-2">Control de Acceso</a><br>
+        <a href="./index.php">Lectura de Codigo QR</a>
       </form>
     </div>
   
+    <script src="./validaciones/anima.js"></script>
   </body>
 </html>
 <?php 

@@ -35,10 +35,13 @@
     <link rel="stylesheet" href="./css/header.css">
     <!-- link estilos de caja y modal-->
     <link rel="stylesheet" href="./css/caja.css">
+    <!-- Css de generar_qr -->
+    <link rel="stylesheet" href="./css/codigoQR.css">  
     <!-- validaciones de java script -->
     <script type='text/javascript' src="./validaciones/validaciones.js"></script>
     <!-- link de sweetalert -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <title>Control De Acceso|Colaboradores</title>
 </head>
 <body>
@@ -176,7 +179,7 @@
       </div>
       <div class="modal-body">
       <label for="cargo">Cargo</label>
-            <select name="cargo" id="cargo">
+            <select name="cargo" id="cargoSelect" >
                 <option value="" selected>Seleccione</option>
                     <?php
                         foreach ($cargos as $key => $cargo){     
@@ -189,12 +192,33 @@
 
         <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary">Generar</button>
+        <button type="button" class="btn btn-primary" onclick="generarCodigosQR()">Generar</button>
       </div>
       </div>
     </div>
   </div>
 </div>
+<!-- fin de modal -->
+ <!-- Modal para mostrar los códigos QR -->
+ <div class="modal fade" id="modalCodigosQR" tabindex="-1" role="dialog" aria-labelledby="modalCodigosQRLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCodigosQRLabel">Códigos QR</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Los códigos QR generados se mostrarán aquí -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="imprimirCodigosQR()">Imprimir</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Fin Modal para mostral los Codigos QR -->
+
 <!-- Bootstrap-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <!-- jQuery -->
@@ -202,6 +226,105 @@
     <!-- DataTable -->
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+ <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+ <script>
+    function generarCodigosQR() {
+      var selectElement = document.getElementById("cargoSelect");
+      var cargoSeleccionada = selectElement.value;
+
+      if (cargoSeleccionada === "") {
+        return; // No se ha seleccionado una cargo, no hacer nada
+      }
+
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var datos = JSON.parse(xhr.responseText);
+          var modalBody = document.getElementById("modalBody");
+          modalBody.innerHTML = ""; // Limpiar el contenido del modal antes de generar los nuevos
+
+          for (var i = 0; i < datos.length; i++) {
+            var codigo = datos[i].documento;
+            var nombre = datos[i].nombre;
+            var nombrecargo = datos[i].cargo;
+
+            var carne = document.createElement("div");
+            carne.className = "carne";
+
+            var nombreElement = document.createElement("p");
+            nombreElement.className = "nombre";
+            nombreElement.textContent = nombre;
+            carne.appendChild(nombreElement);
+
+            var documentoElement = document.createElement("p");
+            documentoElement.className = "documento";
+            documentoElement.textContent = "documento: " + codigo;
+            carne.appendChild(documentoElement);
+
+            var cargoElement = document.createElement("p");
+            cargoElement.className = "cargo";
+            cargoElement.textContent = "cargo: " + nombrecargo;
+            carne.appendChild(cargoElement);
+
+            var qrElement = document.createElement("div");
+            qrElement.className = "codigo-qr";
+            carne.appendChild(qrElement);
+
+            var qrCode = new QRCode(qrElement, {
+              text: codigo,
+              width: 128,
+              height: 128
+            });
+
+            modalBody.appendChild(carne);
+          }
+
+          // Mostrar el modal
+          $('#modalCodigosQR').modal('show');
+        }
+      };
+
+      // Realizar la consulta a la base de datos para obtener los datos de los estudiantes por cargo
+      var url = "./obtener/obtener_datosColaboradores.php?cargo=" + encodeURIComponent(cargoSeleccionada);
+      xhr.open("GET", url, true);
+      xhr.send();
+    }
+    function imprimirCodigosQR() {
+  var ventanaImpresion = window.open("", "_blank");
+  var contenidoHTML = '<html><head><title>Códigos QR - Vista previa de impresión</title>';
+  contenidoHTML += '<style>';
+  contenidoHTML += 'body { font-family: Arial, sans-serif; margin: 0; padding: 20px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }';
+  contenidoHTML += '.carne { width: 200px; height: auto; border: 1px solid #ccc; padding: 20px; margin: 10px; text-align: center; box-sizing: border-box; }';
+  contenidoHTML += '.nombre { font-weight: bold; }';
+  contenidoHTML += '.codigo-qr-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 10px; }';
+  contenidoHTML += '.codigo-qr { max-width: 100%; }';
+  contenidoHTML += '</style>';
+  contenidoHTML += '</head><body>';
+
+  var codigosQR = document.getElementsByClassName("carne");
+
+  for (var i = 0; i < codigosQR.length; i++) {
+    contenidoHTML += '<div class="carne">';
+    contenidoHTML += '<div class="codigo-qr-container">';
+    contenidoHTML += codigosQR[i].innerHTML;
+    contenidoHTML += '</div>';
+    contenidoHTML += '</div>';
+  }
+
+  contenidoHTML += '</body></html>';
+
+  ventanaImpresion.document.open();
+  ventanaImpresion.document.write(contenidoHTML);
+  ventanaImpresion.document.close();
+
+  ventanaImpresion.print();
+}
+
+  </script>
+
 </body>
 </html>
 <?php

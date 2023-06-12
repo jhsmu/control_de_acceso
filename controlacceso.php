@@ -27,23 +27,22 @@ error_reporting(0);
       <h1>Campus Univerisitario</h1>
       <h3>Uniclaretiana</h3>
       <form method="post" action="./ingreso/ingreso.php">
-        <div class="contenedorVideo">
-        <video src="" id="video" width="100%" height="100%"></video>
-        </div>
+        <label for="identifiacion">Indentificacion</label>
+        <input type="text" name="indentificacion" placeholder="Digite su Documento">
         <select name="estado" id="">
             <option value="" selected>Seleccione</option>
             <option value="1" >Entrada</option>
             <option value="0" >Salida</option>
             </select>
         <button class="boton" type="submit" name="ingresar">Ingreso</button>
-        <a href="./loginadmin.php" class="mt-2">Administrador</a><br>
-        <a href="./controlacceso.php">Control de Acceso</a>
+        <a href="./loginadmin.php">Administrador</a><br>
+        <a href="./index.php">Lectura de Codigo QR </a>
       </form>
     </div>
 
 
     <script src="./validaciones/anima.js"></script>
-    <script src="./validaciones/camara.js"></script>
+  
   </body>
 </html>
 <?php 
@@ -73,11 +72,23 @@ if (isset($_SESSION["salida"])) {
 if (isset($_SESSION["registroDoble"])) {
   echo "<script>
   Swal.fire({
-      icon: 'erro',
+      icon: 'info',
       title: '¡Ups!',
       text: 'Ya has ingresado al campus, presiona en la opcion de salida'
       });
   </script>";
   unset($_SESSION['registroDoble']);
 }
+
+if (isset($_SESSION["Prohibido"])) {
+  echo "<script>
+  Swal.fire({
+      icon: 'error',
+      title: '!Ohh lo sentimos¡',
+      text: 'Pero no puedes ingresar al campus'
+      });
+  </script>";
+  unset($_SESSION['Prohibido']);
+}
+
 ?>

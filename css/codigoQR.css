@@ -1,0 +1,39 @@
+    /* Estilo para el carné */
+    .carne {
+        display: inline-block;
+        width: 200px;
+        padding: 20px;
+        margin: 10px;
+        border: 1px solid #ccc;
+        text-align: center;
+      }
+  
+      /* Estilo para el código QR */
+      .codigo-qr {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+      }
+  
+      /* Estilo para el nombre del estudiante */
+      .nombre {
+        font-weight: bold;
+      }
+  
+      /* Estilo para el número de documento */
+      .documento {
+        margin-bottom: 5px;
+      }
+  
+      /* Estilo para la carrera */
+      .carrera {
+        font-style: italic;
+      }
+  
+      /* Estilo responsivo */
+      @media (max-width: 768px) {
+        .carne {
+          width: 100%;
+        }
+      }
