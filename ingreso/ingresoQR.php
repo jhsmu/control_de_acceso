@@ -2,98 +2,154 @@
 session_start();
 require_once '../Database/conexion.php';
 
-if (isset($_POST['documento'])) {
+if (isset($_POST['ingresar'])) {
     $pendiente = 1;
     $finalizado = 0;
-    $documento = $_POST['documento'];
-    $tipo = $_POST['tipo'];
+    $identificacion = $_POST['indentificacion'];
+    $estadoIngreso = $_POST['estado'];
 
-    // Consultar el documento en la tabla correspondiente (colaboradores o estudiantes)
-    if ($tipo == 'colaborador') {
-        $consulta = $DB_con->prepare("SELECT * FROM colaboradores WHERE documento = :documento");
-        $consulta->bindValue(':documento', $documento);
-    } else if ($tipo == 'estudiante') {
-        $consulta = $DB_con->prepare("SELECT * FROM estudiante WHERE documento = :documento");
-        $consulta->bindValue(':documento', $documento);
+    $consultarC = "SELECT * FROM colaboradores WHERE documento = :identificacion";
+    $consultaC = $DB_con->prepare($consultarC);
+    $consultaC->bindValue(':identificacion', $identificacion);
+    $consultaC->execute();
+    $ingresoC = $consultaC->fetch(PDO::FETCH_ASSOC);
+
+    $consultarE = "SELECT * FROM estudiante WHERE identificacion = :identificacion";
+    $consultaE = $DB_con->prepare($consultarE);
+    $consultaE->bindValue(':identificacion', $identificacion);
+    $consultaE->execute();
+    $ingresoE = $consultaE->fetch(PDO::FETCH_ASSOC);
+
+    if (!$ingresoC && !$ingresoE) {
+        $_SESSION['Prohibido'] = 'No eres del campus';
+        header("location: ../controlacceso.php");
+        exit(); // Terminar la ejecución del script
     }
 
-    $consulta->execute();
-    $registro = $consulta->fetch(PDO::FETCH_ASSOC);
+    $estadoI = null;
+    $id = null;
+    $numeroDocumento = null;
 
-    if (!$registro) {
-        $_SESSION['Prohibido'] = 'No eres parte de la institución';
-        echo "No eres parte de la institución";
-        exit(); // Terminar la ejecución del script
+    if ($ingresoC) {
+        $id = $ingresoC['id'];
+        $numeroDocumento = $ingresoC['documento'];
+
+        // Verificar estado de ingreso
+        $consultarIngresoC = "SELECT ingresoEstado FROM ingreso WHERE id_colaboradores = :id";
+        $consultaIngresoC = $DB_con->prepare($consultarIngresoC);
+        $consultaIngresoC->bindValue(':id', $id);
+        $consultaIngresoC->execute();
+        $ingresoColaborador = $consultaIngresoC->fetch(PDO::FETCH_ASSOC);
+
+        if ($ingresoColaborador) {
+            $estadoI = $ingresoColaborador['ingresoEstado'];
+        }
+    } elseif ($ingresoE) {
+        $id = $ingresoE['id'];
+        $numeroDocumento = $ingresoE['identificacion'];
+
+        // Verificar estado de ingreso
+        $consultarIngresoE = "SELECT ingresoEstado FROM ingreso WHERE id_estudiante = :id";
+        $consultaIngresoE = $DB_con->prepare($consultarIngresoE);
+        $consultaIngresoE->bindValue(':id', $id);
+        $consultaIngresoE->execute();
+        $ingresoEstudiante = $consultaIngresoE->fetch(PDO::FETCH_ASSOC);
+
+        if ($ingresoEstudiante) {
+            $estadoI = $ingresoEstudiante['ingresoEstado'];
+        }
     }
 
     $hora_actual = new DateTime();
     $hora_actual->modify('-7 hours');
     $hora_resta = $hora_actual->format('Y-m-d H:i:s');
 
-    $id = $registro['id'];
+    if ($estadoI != $estadoIngreso) {
+        if ($estadoIngreso == 1) {
+            // Insertar nuevo registro de ingreso para colaboradores
+            if ($ingresoC) {
+                $query = $DB_con->prepare("INSERT INTO ingreso(id_colaboradores, fechaingreso, ingresoEstado) VALUES(:id, :fechaingreso, :ingresoEstado)");
+                $query->bindValue(':id', $id);
+                $query->bindValue(':fechaingreso', $hora_resta);
+                $query->bindValue(':ingresoEstado', $pendiente);
+                $guardar = $query->execute();
 
-    // Verificar estado de ingreso
-    if ($tipo == 'colaborador') {
-        $consultaIngreso = $DB_con->prepare("SELECT ingresoEstado FROM ingreso WHERE id_colaboradores = :id");
-        $consultaIngreso->bindValue(':id', $id);
-    } else if ($tipo == 'estudiante') {
-        $consultaIngreso = $DB_con->prepare("SELECT ingresoEstado FROM ingreso WHERE id_estudiante = :id");
-        $consultaIngreso->bindValue(':id', $id);
-    }
+                if ($guardar) {
+                    $lastInsertId = $DB_con->lastInsertId();
+                    $_SESSION['lastInsertId'] = $lastInsertId;
+                    $_SESSION['exito'] = 'Éxito al registrar';
+                    header("location: ../controlacceso.php");
+                    exit();
+                } else {
+                    $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
+                    header("location: ../controlacceso.php");
+                    exit();
+                }
+            }
 
-    $consultaIngreso->execute();
-    $ingreso = $consultaIngreso->fetch(PDO::FETCH_ASSOC);
+            // Insertar nuevo registro de ingreso para estudiantes
+            if ($ingresoE) {
+                $query = $DB_con->prepare("INSERT INTO ingreso(id_estudiante, fechaingreso, ingresoEstado) VALUES(:id, :fechaingreso, :ingresoEstado)");
+                $query->bindValue(':id', $id);
+                $query->bindValue(':fechaingreso', $hora_resta);
+                $query->bindValue(':ingresoEstado', $pendiente);
+                $guardar = $query->execute();
 
-    if ($ingreso) {
-        $estadoIngreso = $ingreso['ingresoEstado'];
-    }
-
-    if ($estadoIngreso != $pendiente) {
-        // Insertar nuevo registro de ingreso
-        if ($tipo == 'colaborador') {
-            $query = $DB_con->prepare("INSERT INTO ingreso(id_colaboradores, fechaingreso, ingresoEstado) VALUES(:id, :fechaingreso, :ingresoEstado)");
-            $query->bindValue(':id', $id);
-        } else if ($tipo == 'estudiante') {
-            $query = $DB_con->prepare("INSERT INTO ingreso(id_estudiante, fechaingreso, ingresoEstado) VALUES(:id, :fechaingreso, :ingresoEstado)");
-            $query->bindValue(':id', $id);
-        }
-
-        $query->bindValue(':fechaingreso', $hora_resta);
-        $query->bindValue(':ingresoEstado', $pendiente);
-        $guardar = $query->execute();
-
-        if ($guardar) {
-            $_SESSION['exito'] = 'Ingreso registrado exitosamente';
-            echo "Ingreso registrado exitosamente";
-            exit();
+                if ($guardar) {
+                    $lastInsertId = $DB_con->lastInsertId();
+                    $_SESSION['lastInsertId'] = $lastInsertId;
+                    $_SESSION['exito'] = 'Éxito al registrar';
+                    header("location: ../controlacceso.php");
+                    exit();
+                } else {
+                    $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
+                    header("location: ../controlacceso.php");
+                    exit();
+                }
+            }
         } else {
-            $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-            echo "Error al guardar el ingreso";
-            exit();
+            // Actualizar registro de ingreso existente para colaboradores
+            if ($ingresoC) {
+                $query = $DB_con->prepare("UPDATE ingreso SET fechasalida = :fechasalida, ingresoEstado = :ingresoEstado WHERE id_colaboradores = :id");
+                $query->bindValue(':fechasalida', $hora_resta);
+                $query->bindValue(':ingresoEstado', $finalizado);
+                $query->bindValue(':id', $id);
+                $actualizar = $query->execute();
+
+                if ($actualizar) {
+                    $_SESSION['salida'] = 'Salida exitosa';
+                    header("location: ../controlacceso.php");
+                    exit();
+                } else {
+                    $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
+                    header("location: ../controlacceso.php");
+                    exit();
+                }
+            }
+
+            // Actualizar registro de ingreso existente para estudiantes
+            if ($ingresoE) {
+                $query = $DB_con->prepare("UPDATE ingreso SET fechasalida = :fechasalida, ingresoEstado = :ingresoEstado WHERE id_estudiante = :id");
+                $query->bindValue(':fechasalida', $hora_resta);
+                $query->bindValue(':ingresoEstado', $finalizado);
+                $query->bindValue(':id', $id);
+                $actualizar = $query->execute();
+
+                if ($actualizar) {
+                    $_SESSION['salida'] = 'Salida exitosa';
+                    header("location: ../controlacceso.php");
+                    exit();
+                } else {
+                    $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
+                    header("location: ../controlacceso.php");
+                    exit();
+                }
+            }
         }
     } else {
-        // Actualizar registro de ingreso existente
-        if ($tipo == 'colaborador') {
-            $query = $DB_con->prepare("UPDATE ingreso SET fechasalida = :fechasalida, ingresoEstado = :ingresoEstado WHERE id_colaboradores = :id");
-            $query->bindValue(':id', $id);
-        } else if ($tipo == 'estudiante') {
-            $query = $DB_con->prepare("UPDATE ingreso SET fechasalida = :fechasalida, ingresoEstado = :ingresoEstado WHERE id_estudiante = :id");
-            $query->bindValue(':id', $id);
-        }
-
-        $query->bindValue(':fechasalida', $hora_resta);
-        $query->bindValue(':ingresoEstado', $finalizado);
-        $actualizar = $query->execute();
-
-        if ($actualizar) {
-            $_SESSION['exito'] = 'Salida registrada exitosamente';
-            echo "Salida registrada exitosamente";
-            exit();
-        } else {
-            $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-            echo "Error al guardar la salida";
-            exit();
-        }
+        $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
+        header("location: ../controlacceso.php");
+        exit();
     }
 }
 ?>

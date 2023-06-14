@@ -151,4 +151,3 @@ if (isset($_POST['ingresar'])) {
         }
     }
    }
-}
