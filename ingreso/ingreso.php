@@ -150,4 +150,5 @@ if (isset($_POST['ingresar'])) {
             exit();
         }
     }
+   }
 }
