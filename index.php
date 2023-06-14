@@ -12,6 +12,7 @@ error_reporting(0);
     <link rel="stylesheet" href="./css/login.css">
     <link rel="stylesheet" href="./css/reloj.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <title>Sistema de Control de Acceso</title>
   </head>
   <body>
@@ -26,9 +27,9 @@ error_reporting(0);
       <img src="./img/logo-fucla.png" class="avatar" alt="logo fluca">
       <h1>Campus Univerisitario</h1>
       <h3>Uniclaretiana</h3>
-      <form method="post" action="./ingreso/ingreso.php">
+      <form method="post" action="./ingreso/ingresoQR.php">
         <div class="contenedorVideo">
-        <video src="" id="video" width="100%" height="100%"></video>
+        <video src="" id="video" width="100%" height="100%" ></video>
         </div>
         <select name="estado" id="">
             <option value="" selected>Seleccione</option>
@@ -44,6 +45,10 @@ error_reporting(0);
 
     <script src="./validaciones/anima.js"></script>
     <script src="./validaciones/camara.js"></script>
+    <!-- Agrega esta etiqueta script antes de tu script PHP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
+  
   </body>
 </html>
 <?php 
