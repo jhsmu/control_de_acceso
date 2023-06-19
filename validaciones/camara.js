@@ -1,6 +1,7 @@
 navigator.mediaDevices.getUserMedia({ video: true })
   .then((stream) => {
     const video = document.getElementById('video');
+    
     video.srcObject = stream;
     video.play();
 
@@ -11,12 +12,13 @@ navigator.mediaDevices.getUserMedia({ video: true })
       canvas.height = video.videoHeight;
 
       setInterval(() => {
+        const estado = document.getElementById('estado').value;
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
         const qrCode = jsQR(imageData.data, imageData.width, imageData.height);
         if (qrCode) {
           const numeroDocumento = qrCode.data;
-
+          console.log(numeroDocumento);
           // Definir la URL de tu script PHP. Asegúrate de reemplazarla con la tuya.
           const phpURL = './ingreso/ingresoQR.php';
 
@@ -26,7 +28,7 @@ navigator.mediaDevices.getUserMedia({ video: true })
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `indentificacion=${numeroDocumento}&ingresar=1&estado=1`,
+            body: `indentificacion=${numeroDocumento}&ingresar=1&estado=${estado}`,
           })
           .then(response => response.text())
           .then(data => {

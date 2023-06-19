@@ -29,7 +29,7 @@ error_reporting(0);
       <form method="post" action="./ingreso/ingreso.php">
         <label for="identifiacion">Indentificacion</label>
         <input type="text" name="indentificacion" placeholder="Digite su Documento">
-        <select name="estado" id="">
+        <select name="estado" id="estado">
             <option value="" selected>Seleccione</option>
             <option value="1" >Entrada</option>
             <option value="0" >Salida</option>

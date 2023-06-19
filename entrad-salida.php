@@ -1,14 +1,9 @@
 <?php 
-
     include './Database/conexion.php';
-
     $consulta = "SELECT * FROM ingreso";
     $consulta1 = $DB_con ->prepare($consulta);
     $consulta1->execute();
     $ingresos=$consulta1->fetchAll(PDO::FETCH_ASSOC);
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

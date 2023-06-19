@@ -11,8 +11,7 @@ error_reporting(0);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/login.css">
     <link rel="stylesheet" href="./css/reloj.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Sistema de Control de Acceso</title>
   </head>
   <body>
@@ -27,16 +26,16 @@ error_reporting(0);
       <img src="./img/logo-fucla.png" class="avatar" alt="logo fluca">
       <h1>Campus Univerisitario</h1>
       <h3>Uniclaretiana</h3>
-      <form method="post" action="./ingreso/ingresoQR.php">
-        <div class="contenedorVideo">
-        <video src="" id="video" width="100%" height="100%" ></video>
+      <form method="post" action="">
+        <div style="display: flex; justify-content: center; align-items: center;">
+        <video src="" id="video" width="85%" height="75%" ></video>
         </div>
-        <select name="estado" id="">
+        <label for="estado"></label>
+        <select name="estado" id="estado">
             <option value="" selected>Seleccione</option>
             <option value="1" >Entrada</option>
             <option value="0" >Salida</option>
-            </select>
-        <button class="boton" type="submit" name="ingresar">Ingreso</button>
+        </select>
         <a href="./loginadmin.php" class="mt-2">Administrador</a><br>
         <a href="./controlacceso.php">Control de Acceso</a>
       </form>
@@ -48,11 +47,11 @@ error_reporting(0);
     <!-- Agrega esta etiqueta script antes de tu script PHP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
-  
   </body>
-</html>
-<?php 
 
+</html>
+
+<?php 
 if (isset($_SESSION["exito"])) {
   echo "<script>
   Swal.fire({
@@ -84,5 +83,16 @@ if (isset($_SESSION["registroDoble"])) {
       });
   </script>";
   unset($_SESSION['registroDoble']);
+}
+
+if (isset($_SESSION["Prohibido"])) {
+  echo "<script>
+  Swal.fire({
+      icon: 'erro',
+      title: '¡Ups!',
+      text: 'Ya has ingresado al campus, presiona en la opcion de salida'
+      });
+  </script>";
+  unset($_SESSION['Prohibido']);
 }
 ?>

@@ -6,8 +6,10 @@ if (isset($_POST['ingresar'])) {
     $pendiente = 1;
     $finalizado = 0;
     $identificacion = $_POST['indentificacion'];
+    echo 'identificacion: ',$identificacion;
     $estadoIngreso = $_POST['estado'];
-
+    echo 'estadoIngreso: ',$estadoIngreso ;
+    echo '{',gettype($estadoIngreso),'}';
     $consultarC = "SELECT * FROM colaboradores WHERE documento = :identificacion";
     $consultaC = $DB_con->prepare($consultarC);
     $consultaC->bindValue(':identificacion', $identificacion);
@@ -21,8 +23,9 @@ if (isset($_POST['ingresar'])) {
     $ingresoE = $consultaE->fetch(PDO::FETCH_ASSOC);
 
     if (!$ingresoC && !$ingresoE) {
+        session_start();
         $_SESSION['Prohibido'] = 'No eres del campus';
-        header("location: ../controlacceso.php");
+         header("location: ../controlacceso.php");
         exit(); // Terminar la ejecución del script
     }
 
@@ -39,10 +42,14 @@ if (isset($_POST['ingresar'])) {
         $consultaIngresoC = $DB_con->prepare($consultarIngresoC);
         $consultaIngresoC->bindValue(':id', $id);
         $consultaIngresoC->execute();
-        $ingresoColaborador = $consultaIngresoC->fetch(PDO::FETCH_ASSOC);
+        $ingresoColaborador = $consultaIngresoC->fetch(PDO::FETCH_ASSOC); 
 
+        echo $ingresoColaborador;
         if ($ingresoColaborador) {
+        
+            echo ' ingreso colaborador ';
             $estadoI = $ingresoColaborador['ingresoEstado'];
+            echo $estadoI;
         }
     } elseif ($ingresoE) {
         $id = $ingresoE['id'];
@@ -59,15 +66,18 @@ if (isset($_POST['ingresar'])) {
             $estadoI = $ingresoEstudiante['ingresoEstado'];
         }
     }
-
+    
     $hora_actual = new DateTime();
     $hora_actual->modify('-7 hours');
     $hora_resta = $hora_actual->format('Y-m-d H:i:s');
 
+    
+
     if ($estadoI != $estadoIngreso) {
-        if ($estadoIngreso == 1) {
+        if ($estadoIngreso == "1") {
             // Insertar nuevo registro de ingreso para colaboradores
             if ($ingresoC) {
+                
                 $query = $DB_con->prepare("INSERT INTO ingreso(id_colaboradores, fechaingreso, ingresoEstado) VALUES(:id, :fechaingreso, :ingresoEstado)");
                 $query->bindValue(':id', $id);
                 $query->bindValue(':fechaingreso', $hora_resta);
@@ -75,15 +85,19 @@ if (isset($_POST['ingresar'])) {
                 $guardar = $query->execute();
 
                 if ($guardar) {
+                    session_start();
                     $lastInsertId = $DB_con->lastInsertId();
                     $_SESSION['lastInsertId'] = $lastInsertId;
-                    $_SESSION['exito'] = 'Éxito al registrar';
-                    header("location: ../controlacceso.php");
-                    exit();
+                     $_SESSION['exito'] = 'Éxito al registrar';
+                     $_SESSION['mensaje'] = 'exito';
+                    header("location: ../index.php");
+
+                     exit();
                 } else {
+                    session_start();
                     $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-                    header("location: ../controlacceso.php");
-                    exit();
+                     header("location: ../index.php");
+                     exit();
                 }
             }
 
@@ -96,18 +110,21 @@ if (isset($_POST['ingresar'])) {
                 $guardar = $query->execute();
 
                 if ($guardar) {
+                    session_start();
                     $lastInsertId = $DB_con->lastInsertId();
                     $_SESSION['lastInsertId'] = $lastInsertId;
-                    $_SESSION['exito'] = 'Éxito al registrar';
-                    header("location: ../controlacceso.php");
-                    exit();
+                     $_SESSION['exito'] = 'Éxito al registrar';
+                     header("location: ../index.php");
+                     exit();
                 } else {
+                    session_start();
                     $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-                    header("location: ../controlacceso.php");
-                    exit();
+                     header("location: ../index.php");
+                     exit();
                 }
             }
         } else {
+            echo 'actua';
             // Actualizar registro de ingreso existente para colaboradores
             if ($ingresoC) {
                 $query = $DB_con->prepare("UPDATE ingreso SET fechasalida = :fechasalida, ingresoEstado = :ingresoEstado WHERE id_colaboradores = :id");
@@ -117,12 +134,14 @@ if (isset($_POST['ingresar'])) {
                 $actualizar = $query->execute();
 
                 if ($actualizar) {
+                    session_start();
                     $_SESSION['salida'] = 'Salida exitosa';
-                    header("location: ../controlacceso.php");
-                    exit();
+                     header("location: ../index.php");
+                     exit();
                 } else {
+                    session_start();
                     $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-                    header("location: ../controlacceso.php");
+                    header("location: ../index.php");
                     exit();
                 }
             }
@@ -136,19 +155,22 @@ if (isset($_POST['ingresar'])) {
                 $actualizar = $query->execute();
 
                 if ($actualizar) {
+                    session_start();
                     $_SESSION['salida'] = 'Salida exitosa';
-                    header("location: ../controlacceso.php");
-                    exit();
+                     header("location: ../index.php");
+                     exit();
                 } else {
+                    session_start();
                     $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-                    header("location: ../controlacceso.php");
-                    exit();
+                     header("location: ../index.php");
+                     exit();
                 }
             }
         }
     } else {
+        session_start();
         $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-        header("location: ../controlacceso.php");
+        header("location: ../index.php");
         exit();
     }
 }

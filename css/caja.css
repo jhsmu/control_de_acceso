@@ -5,7 +5,6 @@
 
 .todo{
     position: relative;
-    
 }
 .posiciom{
     position: absolute;
@@ -16,6 +15,17 @@
     position: absolute;
     right: 190px;
     bottom: -9px;
+}
+.posicion{
+    position: relative;
+}
+.posicion .fecha{
+    position: relative;
+}
+.posicion .fecha1{
+    position: relative;
+    bottom: 40px;
+    left: 250px;
 }
 .caja select{
     border: none;
@@ -64,6 +74,17 @@
     height: 30px;
 }
 select{
+    border: none;
+    border-bottom: 1px solid #111;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #111;
+    font-size: 16px;
+    width: 100%;
+    height: 30px;
+}
+.posicion .fecha{
     border: none;
     border-bottom: 1px solid #111;
     background: transparent;
