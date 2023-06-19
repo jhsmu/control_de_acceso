@@ -40,12 +40,8 @@
                 <input type="date" name="" id=""> 
             </div>
         </div>
-        <div class="todo">
-            <div class="posiciom">
-                <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#agregar_colaboradores"> Agregar Colaborador</button>
-            </div>
-            <div class="posiciom1">
-                <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#generar_qr"> Generar Codigo QR</button>
+            <div class="imprimir">
+                <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#generar_qr">Imprimir</button>
             </div>
         </div>
    </div>

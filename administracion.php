@@ -9,6 +9,18 @@
     $consulta1->execute(); //Ejecuto mi petición
     $estudiantes = $consulta1->fetch(PDO::FETCH_NUM); //Me traigo los datos que necesito
 
+    
+    $consultaEntrada = $DB_con->prepare("SELECT COUNT(*) as total_entrada FROM ingreso WHERE fechaingreso IS NOT NULL");
+    $consultaEntrada->execute();
+    $resultadoEntrada = $consultaEntrada->fetch(PDO::FETCH_ASSOC);
+    $totalEntrada = $resultadoEntrada['total_entrada'];
+
+    $consultaSalida = $DB_con->prepare("SELECT COUNT(*) as total_salida FROM ingreso WHERE fechasalida IS NOT NULL");
+    $consultaSalida->execute();
+    $resultadoSalida = $consultaSalida->fetch(PDO::FETCH_ASSOC);
+    $totalSalida = $resultadoSalida['total_salida'];
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,26 +81,30 @@
     <div class="card bg-warning text-dark mb-2 mx-2" style="width: 18rem; height: 6rem;">
         <div class="card-body">
             <p class="card-title text-lg">
-                Total De Entradas/Salidas:
+                Total De Entradas:
             </p>
-            <!-- <p class="card-text text-2xl">
-                <php if ($total_usuarios = $usuarios[0] == null) {
+            <p class="card-text text-2xl">
+                <?php if ($totalEntrada == null) {
                     echo "0";
                 } else {
-                    echo $total_usuarios = $usuarios[0];
+                    echo $totalEntrada;
                 } ?>
-            </p> -->
+            </p>
         </div>
     </div>
 
     <div class="card bg-success text-white mb-2 mx-2" style="width: 18rem; height: 6rem;">
         <div class="card-body">
             <p class="card-title text-lg">
-                Total de Productos:
+                Total De Salidas:
             </p>
-            <!-- <p class="card-text text-2xl">
-                <php echo $total_productos = $productos[0]; ?>
-            </p> -->
+            <p class="card-text text-2xl">
+                <?php if ($totalSalida == null) {
+                    echo "0";
+                } else {
+                    echo $totalSalida;
+                } ?>
+            </p>
         </div>
     </div>
 </div>
