@@ -98,12 +98,12 @@ CREATE TABLE `colaboradores` (
 --
 
 INSERT INTO `colaboradores` (`id`, `nombre`, `apellido`, `documento`, `cargo`, `telefono`) VALUES
-(7, 'juan', 'ortiz mena', '1278912328', 1, '3225432346'),
-(8, 'felipe', 'mendoza aguilar', '1268912328', 1, '3215430346'),
-(9, 'esteven', 'mendez mena', '1208962328', 1, '3226430341'),
-(10, 'juan', 'ortiz mena', '1278912329', 2, '3235662346'),
-(11, 'gimena', 'herrera mena', '1278912307', 2, '3135662346'),
-(12, 'laura', 'perez hinestrosa', '1273912320', 2, '3245662340');
+(1, 'juan', 'ortiz mena', '1278912328', 1, '3225432346'),
+(2, 'felipe', 'mendoza aguilar', '1268912328', 1, '3215430346'),
+(3, 'esteven', 'mendez mena', '1208962328', 1, '3226430341'),
+(3, 'juan', 'ortiz mena', '1278912329', 2, '3235662346'),
+(4, 'gimena', 'herrera mena', '1278912307', 2, '3135662346'),
+(5, 'laura', 'perez hinestrosa', '1273912320', 2, '3245662340');
 
 -- --------------------------------------------------------
 
