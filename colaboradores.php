@@ -143,7 +143,7 @@
                         </div>
                         <div class="col-6 mt-3">
                             <label for="cargo">Cargo</label>
-                                <select name="cargo" id="cargo">
+                                <select name="cargo" id="cargo" required>
                                     <option value="" selected>Seleccione</option>
                                     <?php
                                         foreach ($cargos as $key => $cargo){     
