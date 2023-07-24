@@ -3,7 +3,7 @@ include './Database/conexion.php';
 
 if (!isset($_POST["genero"])) {
     $consulta = "SELECT invitados.nombre, invitados.apellido, invitados.documento, genero.nombre as genero, invitados.descripcion, invitados.telefono FROM invitados
-                 INNER JOIN genero ON invitados.id_genero = genero.id_genero";
+                 INNER JOIN genero ON invitados.genero = genero.id_genero";
     $consulta1 = $DB_con->prepare($consulta);
     $consulta1->execute();
 } else {
