@@ -36,7 +36,7 @@ error_reporting(0);
             <option value="1" >Entrada</option>
             <option value="0" >Salida</option>
         </select>
-        <a href="./loginadmin.php" class="mt-2">Administrador</a><br>
+        <a href="./invitado.php" class="mt-2">Invitado</a><br>
         <a href="./controlacceso.php">Control de Acceso</a>
       </form>
     </div>
@@ -77,7 +77,7 @@ if (isset($_SESSION["salida"])) {
 if (isset($_SESSION["registroDoble"])) {
   echo "<script>
   Swal.fire({
-      icon: 'erro',
+      icon: 'error',
       title: '¡Ups!',
       text: 'Ya has ingresado al campus, presiona en la opcion de salida'
       });
@@ -88,7 +88,7 @@ if (isset($_SESSION["registroDoble"])) {
 if (isset($_SESSION["Prohibido"])) {
   echo "<script>
   Swal.fire({
-      icon: 'erro',
+      icon: 'error',
       title: '¡Ups!',
       text: 'Ya has ingresado al campus, presiona en la opcion de salida'
       });

@@ -1,4 +1,66 @@
-.contenido{
-    margin: 150px 0px;
-    
+/* .progress-circle {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.progress-circle-value {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    clip: rect(0, 50px, 100px, 0);
+    background-color: #f00;  Color de la barra de progreso 
+    transform: rotate(180deg);
+} */
+
+.card {
+  width: 300px;
+  margin: 20px;
+}
+
+.progress-wrapper {
+  position: relative;
+  width: 200px;
+  height: 100px;
+  margin-bottom: 10px;
+  background-color: #f2f2f2; /* Color del fondo de la barra de progreso */
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f00; /* Color de la barra de progreso */
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #000; /* Color del texto de progreso */
+}
+
+.card-text {
+  font-size: 18px;
 }

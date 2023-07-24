@@ -18,6 +18,7 @@
                 <ul class="navbar-nav ml-auto" id="nav1">
                     <li class="nav-item"><a href="./colaboradores.php" class="nav-link">Colaboradores</a></li>
                     <li class="nav-item"><a href="./estudiantes.php" class="nav-link">Estudiantes</a></li>
+                    <li class="nav-item"><a href="./invitado.php" class="nav-link">Invitados</a></li>
                     <li class="nav-item"><a href="./entrad-salida.php" class="nav-link">Entrada/Salida</a></li>
                     <li class="nav-item"><a href="./informe.php" class="nav-link">Informe</a></li>
 

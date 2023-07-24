@@ -18,7 +18,6 @@
         $consultar = "SELECT * FROM carrera";
         $consulta2 = $DB_con->prepare($consultar);
         $consulta2->execute();
-
         $carreras = $consulta2->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -58,7 +57,7 @@
         <div class="posicion">
             <form action="" method="post">
             <select name="carrera" id="" onchange="cambio()">
-                <option value="" selected>Seleccione</option>
+                <option value="" selected>Programas</option>
                 <?php
                     foreach ($carreras as $key => $carrera){     
                 ?>
@@ -86,7 +85,7 @@
 
         <thead>
             <tr>
-                <th>Id</th>
+                
                 <th>Nombres</th>
                 <th>Apellidos</th>
                 <th>Identificaciòn</th>
@@ -104,7 +103,7 @@
                         foreach ($rows as $row){  
                 ?>
             <tr>
-                <td><?php echo $row["id"]; ?></td>
+                
                 <td><?php echo $row["nombre"];?></td>
                 <td><?php echo $row["apellido"];?></td>
                 <td><?php echo $row["identificacion"]; ?></td>
@@ -149,7 +148,7 @@
                         </div>
                         <div class="col-6 mt-3">
                             <label for="carrera">Carrera</label>
-                            <select name="carrera" id="carrera" required>
+                            <select name="carrera" id="carrera">
                             <option value="">Seleccione</option>
                             <?php
                                 foreach ($carreras as $key => $carrera){     
@@ -202,7 +201,7 @@
         </select>        
 
         <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
         <button type="button" class="btn btn-primary" onclick="generarCodigosQR()">Generar</button>
       </div>
       </div>
@@ -225,7 +224,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" onclick="imprimirCodigosQR()">Imprimir</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
@@ -245,12 +244,13 @@
         function cambio(){
             document.getElementById('buton').click();
         }
-</script>
+    </script>
 <script>
     $(document).ready(function () {
     $('#example').DataTable({
         "language": {
-                        "url":"//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+                        "url":"//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+                        "lengthMenu": "Mostrar _MENU_"
                     },
         "lengthMenu": [5, 10, 25, 50],
         "pageLength":5

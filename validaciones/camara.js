@@ -32,13 +32,64 @@ navigator.mediaDevices.getUserMedia({ video: true })
           })
           .then(response => response.text())
           .then(data => {
+            data = JSON.parse(data);
             console.log('Respuesta del PHP:', data);
+
+            let {state  } = data;
+
+            switch (state) {
+              case 'exito':
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Bienvenido',
+                  text: 'Al campus Universitario Uniclaretiana ' 
+                  });
+                break;
+              case 'salida':
+                
+                Swal.fire({
+                  icon: 'success',
+                  title: '¡Oh ya te vas!',
+                  text: 'Hasta la proxima' 
+                  });
+                break;
+              case 'registroDoble':
+                Swal.fire({
+                  icon: 'error',
+                  title: '¡Ups!',
+                  text: 'Ya has ingresado al campus, presiona en la opcion de salida'
+                  });
+                break;
+              case 'salidaDoble':
+                Swal.fire({
+                  icon: 'error',
+                  title: '¡Ups!',
+                  text: 'Ya has ingresado al campus, presiona en la opcion de salida'
+                  });
+                break;
+              case 'prohibido':
+                Swal.fire({
+                  icon: 'error',
+                  title: '¡Ups!',
+                  text: 'Ya has ingresado al campus, presiona en la opcion de salida'
+                  });
+                break;
+            
+              default:
+                Swal.fire({
+                  icon: 'error',
+                  title: '¡Ups!',
+                  text: 'Algo salio mal, intenta más tarde'
+                  });
+                break;
+            }
           })
           .catch((error) => {
-            console.error('Error:', error);
+            console.log(error);
+            //console.error('Error:', error);
           });
         }
-      }, 500); // Verifica cada 500ms
+      }, 2500); // Verifica cada 500ms
     }
   })
   .catch((err) => console.error(err));

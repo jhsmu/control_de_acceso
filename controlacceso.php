@@ -15,7 +15,6 @@ error_reporting(0);
     <title>Sistema de Control de Acceso</title>
   </head>
   <body>
-
     <header>
 
     <?php include './componentes/headeracceso.php' ?>
@@ -26,7 +25,7 @@ error_reporting(0);
       <img src="./img/logo-fucla.png" class="avatar" alt="logo fluca">
       <h1>Campus Univerisitario</h1>
       <h3>Uniclaretiana</h3>
-      <form method="post" action="./ingreso/ingreso.php">
+      <form  method="post" action="./ingreso/ingreso.php">
         <label for="identifiacion">Indentificacion</label>
         <input type="text" name="indentificacion" placeholder="Digite su Documento">
         <select name="estado" id="estado">
@@ -35,17 +34,71 @@ error_reporting(0);
             <option value="0" >Salida</option>
             </select>
         <button class="boton" type="submit" name="ingresar">Ingreso</button>
-        <a href="./loginadmin.php">Administrador</a><br>
+        <a href="./invitado.php">Invitado</a><br>
         <a href="./index.php">Lectura de Codigo QR </a>
       </form>
     </div>
 
-
     <script src="./validaciones/anima.js"></script>
-  
+    
   </body>
 </html>
 <?php 
+
+if(isset($_SESSION['ingresoAdmin'])){
+  echo "<script>
+  Swal.fire({
+    title: 'Ingrese la contraseña',
+    input: 'password',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Ingresar',
+    showLoaderOnConfirm: true,
+    preConfirm: (password) => {
+
+      if (password === 'Admin.123') {
+        
+        window.location.href = './loginadmin.php';
+      } else {
+        // Mostrar mensaje de error
+        Swal.fire('Contraseña incorrecta', '', 'error');
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  });
+</script>";
+  unset($_SESSION['ingresoAdmin']);
+}
+
+if(isset($_SESSION['ingresoInvitado'])){
+  echo "<script>
+  Swal.fire({
+    title: 'Ingrese la contraseña',
+    input: 'password',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Ingresar',
+    showLoaderOnConfirm: true,
+    preConfirm: (password) => {
+
+      if (password === 'Admin.123') {
+        
+        window.location.href = './invitados.php';
+      } else {
+        // Mostrar mensaje de error
+        Swal.fire('Contraseña incorrecta', '', 'error');
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  });
+</script>";
+  unset($_SESSION['ingresoInvitado']);
+}
+
 
 if (isset($_SESSION["exito"])) {
   echo "<script>
