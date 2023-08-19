@@ -54,9 +54,8 @@ if (isset($_POST['ingresar'])) {
 
         if ($registroIngreso) {
             $state = "registroDoble";
-        }
-    
-        $hora_actual = new DateTime();
+        }else{
+            $hora_actual = new DateTime();
         $hora_actual->modify('-5 hours');
         $hora_resta = $hora_actual->format('Y-m-d H:i:s');
     
@@ -119,6 +118,9 @@ if (isset($_POST['ingresar'])) {
             header("location: ../index.php");
             exit();
         }
+        }
+    
+        
     }elseif ($estadoIngreso == 0) {
         if ($ingresoC) {
             $estadoUsuario = $ingresoC['estado_colaborador'];
