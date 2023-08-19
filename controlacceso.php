@@ -12,10 +12,10 @@ error_reporting(0);
     <link rel="stylesheet" href="./css/login.css">
     <link rel="stylesheet" href="./css/reloj.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Sistema de Control de Acceso</title>
   </head>
   <body>
-
     <header>
 
     <?php include './componentes/headeracceso.php' ?>
@@ -27,37 +27,146 @@ error_reporting(0);
       <h1>Campus Univerisitario</h1>
       <h3>Uniclaretiana</h3>
       <form method="post" action="./ingreso/ingreso.php">
-        <label for="identifiacion">Indentificacion</label>
-        <input type="text" name="indentificacion" placeholder="Digite su Documento">
+        <label for="identificacion">Identificación</label>
+        <input type="text" name="identificacion" placeholder="Digite su Documento">
         <select name="estado" id="estado">
             <option value="" selected>Seleccione</option>
-            <option value="1" >Entrada</option>
-            <option value="0" >Salida</option>
-            </select>
+            <option value="1">Entrada</option>
+            <option value="0">Salida</option>
+        </select>
         <button class="boton" type="submit" name="ingresar">Ingreso</button>
-        <a href="./loginadmin.php">Administrador</a><br>
-        <a href="./index.php">Lectura de Codigo QR </a>
-      </form>
+        <a href="./index.php">Lectura de Código QR</a>
+    </form>
+
     </div>
 
-
     <script src="./validaciones/anima.js"></script>
-  
+    <script>
+$(document).ready(function () {
+    <?php
+    if (isset($_SESSION['lastInsertId'])) {
+    ?>
+    var lastInsertId = <?php echo $_SESSION['lastInsertId']; ?>;
+    
+    function verificarToken() {
+        Swal.fire({
+            title: 'Ingresa el token de verificación',
+            input: 'text',
+            showCancelButton: true,
+            confirmButtonText: 'Verificar',
+            showLoaderOnConfirm: true,
+            preConfirm: (token) => {
+                return $.ajax({
+                    type: "POST",
+                    url: "./verificar_token.php", // Archivo PHP que verificará el token
+                    data: { token: token, idUsuario: lastInsertId },
+                })
+                .then(function(response) {
+                    response = response.trim(); // Eliminar espacios en blanco
+                    if (response === "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Bienvenido',
+                            text: 'Al campus Universitario Uniclaretiana'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Token incorrecto',
+                            text: 'El token ingresado no es válido'
+                        }).then(() => {
+                            verificarToken(); // Llamar a la función nuevamente para intentar verificar otro token
+                        });
+                    }
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Verificación cancelada',
+                    text: 'Has cancelado la verificación'
+                });
+            }
+        });
+    }
+    
+    verificarToken(); // Llamar a la función para iniciar el proceso de verificación
+    <?php
+    unset($_SESSION['lastInsertId']);
+    }
+    ?>
+});
+
+</script>
+
+
+    
   </body>
 </html>
 <?php 
 
-if (isset($_SESSION["exito"])) {
+if(isset($_SESSION['ingresoAdmin'])){
   echo "<script>
   Swal.fire({
-      icon: 'success',
-      title: 'Bienvenido',
-      text: 'Al campus Universitario Uniclaretiana ' 
-      });
-  </script>";
-  unset($_SESSION['exito']);
+    title: 'Ingrese la contraseña',
+    input: 'password',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Ingresar',
+    showLoaderOnConfirm: true,
+    preConfirm: (password) => {
+
+      if (password === 'Admin.123') {
+        
+        window.location.href = './loginadmin.php';
+      } else {
+        // Mostrar mensaje de error
+        Swal.fire('Contraseña incorrecta', '', 'error');
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  });
+</script>";
+  unset($_SESSION['ingresoAdmin']);
 }
 
+if(isset($_SESSION['ingresoInvitado'])){
+  echo "<script>
+  Swal.fire({
+    title: 'Ingrese la contraseña',
+    input: 'password',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Ingresar',
+    showLoaderOnConfirm: true,
+    preConfirm: (password) => {
+
+      if (password === 'Admin.123') {
+        
+        window.location.href = './invitados.php';
+      } else {
+        // Mostrar mensaje de error
+        Swal.fire('Contraseña incorrecta', '', 'error');
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  });
+</script>";
+  unset($_SESSION['ingresoInvitado']);
+}
+
+if (isset($_SESSION['lastInsertId'])) {
+  echo "<script> 
+    
+  </script>";
+}
+ unset($_SESSION['exito']);
 if (isset($_SESSION["salida"])) {
   echo "<script>
   Swal.fire({
@@ -91,4 +200,14 @@ if (isset($_SESSION["Prohibido"])) {
   unset($_SESSION['Prohibido']);
 }
 
+if (isset($_SESSION['UsuarioDeshabilitado'])){
+  echo "<script>
+  Swal.fire({
+      icon: 'warning',
+      title: '!Ohh lo sentimos¡',
+      text: 'Pero actualmente estas Inhabilitado comunicate con...'
+      });
+  </script>";
+}
+unset($_SESSION['UsuarioDeshabilitado'])
 ?>

@@ -12,6 +12,7 @@ error_reporting(0);
     <link rel="stylesheet" href="./css/login.css">
     <link rel="stylesheet" href="./css/reloj.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Sistema de Control de Acceso</title>
   </head>
   <body>
@@ -36,7 +37,6 @@ error_reporting(0);
             <option value="1" >Entrada</option>
             <option value="0" >Salida</option>
         </select>
-        <a href="./loginadmin.php" class="mt-2">Administrador</a><br>
         <a href="./controlacceso.php">Control de Acceso</a>
       </form>
     </div>
@@ -47,52 +47,67 @@ error_reporting(0);
     <!-- Agrega esta etiqueta script antes de tu script PHP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
+  <script>
+$(document).ready(function () {
+    <?php
+    if (isset($_SESSION['lastInsertId'])) {
+    ?>
+    var lastInsertId = <?php echo $_SESSION['lastInsertId']; ?>;
+    
+    function verificarToken() {
+        Swal.fire({
+            title: 'Ingresa el token de verificación',
+            input: 'text',
+            showCancelButton: true,
+            confirmButtonText: 'Verificar',
+            showLoaderOnConfirm: true,
+            preConfirm: (token) => {
+                return $.ajax({
+                    type: "POST",
+                    url: "./verificar_token.php", // Archivo PHP que verificará el token
+                    data: { token: token, idUsuario: lastInsertId },
+                })
+                .then(function(response) {
+                    response = response.trim(); // Eliminar espacios en blanco
+                    if (response === "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Bienvenido',
+                            text: 'Al campus Universitario Uniclaretiana'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Token incorrecto',
+                            text: 'El token ingresado no es válido'
+                        }).then(() => {
+                            verificarToken(); // Llamar a la función nuevamente para intentar verificar otro token
+                        });
+                    }
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Verificación cancelada',
+                    text: 'Has cancelado la verificación'
+                });
+            }
+        });
+    }
+    
+    verificarToken(); // Llamar a la función para iniciar el proceso de verificación
+    <?php
+    unset($_SESSION['lastInsertId']);
+    }
+    ?>
+});
+
+</script>
+
+
   </body>
 
 </html>
-
-<?php 
-if (isset($_SESSION["exito"])) {
-  echo "<script>
-  Swal.fire({
-      icon: 'success',
-      title: 'Bienvenido',
-      text: 'Al campus Universitario Uniclaretiana ' 
-      });
-  </script>";
-  unset($_SESSION['exito']);
-}
-
-if (isset($_SESSION["salida"])) {
-  echo "<script>
-  Swal.fire({
-      icon: 'success',
-      title: '¡Oh ya te vas!',
-      text: 'Hasta la proxima' 
-      });
-  </script>";
-  unset($_SESSION['salida']);
-}
-
-if (isset($_SESSION["registroDoble"])) {
-  echo "<script>
-  Swal.fire({
-      icon: 'erro',
-      title: '¡Ups!',
-      text: 'Ya has ingresado al campus, presiona en la opcion de salida'
-      });
-  </script>";
-  unset($_SESSION['registroDoble']);
-}
-
-if (isset($_SESSION["Prohibido"])) {
-  echo "<script>
-  Swal.fire({
-      icon: 'erro',
-      title: '¡Ups!',
-      text: 'Ya has ingresado al campus, presiona en la opcion de salida'
-      });
-  </script>";
-  unset($_SESSION['Prohibido']);
-}
-?>

@@ -1,7 +1,7 @@
 navigator.mediaDevices.getUserMedia({ video: true })
   .then((stream) => {
     const video = document.getElementById('video');
-    
+
     video.srcObject = stream;
     video.play();
 
@@ -19,26 +19,73 @@ navigator.mediaDevices.getUserMedia({ video: true })
         if (qrCode) {
           const numeroDocumento = qrCode.data;
           console.log(numeroDocumento);
-          // Definir la URL de tu script PHP. Asegúrate de reemplazarla con la tuya.
           const phpURL = './ingreso/ingresoQR.php';
 
-          // Hacer una solicitud HTTP POST a tu script PHP.
           fetch(phpURL, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `indentificacion=${numeroDocumento}&ingresar=1&estado=${estado}`,
+            body: `identificacion=${numeroDocumento}&ingresar=1&estado=${estado}`,
           })
           .then(response => response.text())
           .then(data => {
+            data = JSON.parse(data);
             console.log('Respuesta del PHP:', data);
+            let {state  } = data;
+
+            switch (state) {
+              case 'salida':
+                Swal.fire({
+                  icon: 'success',
+                  title: '¡Oh ya te vas!',
+                  text: 'Hasta la proxima' 
+                  });
+                break;
+              case 'registroDoble':
+                Swal.fire({
+                  icon: 'info',
+                  title: '¡Ups!',
+                  text: 'Ya has ingresado al campus, presiona en la opcion de salida'
+                  });
+                break;
+              case 'prohibido':
+                Swal.fire({
+                  icon: 'error',
+                  title: '¡Ups!',
+                  text: 'Lo sentimos pero tu no eres del campus'
+                  });
+                break;
+                case 'verificar':
+                  setTimeout(function() {
+                    window.location.href = './index.php';
+                }, 1000); 
+                  break;
+
+              case 'inhabilitado':
+                Swal.fire({
+                  icon: 'warning',
+                  title: '!Ohh lo sentimos¡',
+                  text: 'Pero actualmente estas Inhabilitado comunicate con...'
+                  });
+                break;
+                
+              default:
+                Swal.fire({
+                  icon: 'error',
+                  title: '¡Ups!',
+                  text: 'Algo salio mal, intenta más tarde por favor'
+                  });
+                break;
+            }
           })
           .catch((error) => {
-            console.error('Error:', error);
+            console.log(error);
           });
         }
-      }, 500); // Verifica cada 500ms
+      }, 2500); // Verifica cada 2500ms
     }
   })
   .catch((err) => console.error(err));
+
+

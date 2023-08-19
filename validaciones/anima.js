@@ -1,4 +1,4 @@
-console.clear();
+// console.clear();
 
 function refDigit(arg) {
     return arg < 10 ? '0' + arg : '' + arg;

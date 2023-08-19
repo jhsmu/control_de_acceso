@@ -40,12 +40,43 @@ try {
     <link rel="stylesheet" href="./css/caja.css">
     <title>Control De Acceso|Entrada/Salida</title>
     <style>
-        @media print {
-            .no-print {
-                display: none;
-            }
+    .no-show {
+        display: none;
+    }
+
+    .flex-header {
+        display: flex;
+        justify-content: space-between;
+        text-align: left;
+    }
+
+    .header-item {
+        flex: 1;
+    }
+
+    .header-logo {
+        width: 100px; /*ajusta esto al tamaño que desees*/
+        margin: 0 auto; /*centra la imagen horizontalmente*/
+    }
+
+    .header-description {
+        margin-top: 25px;
+        text-align: center;
+    }
+
+    @media print {
+        .no-show {
+            display: flex;
         }
-    </style>
+
+        .no-print {
+            display: none;
+        }
+    }
+</style>
+
+
+
 </head>
 <body>
     
@@ -60,9 +91,9 @@ try {
             <div class="fecha">
                 <form action="" method="POST">
                     <label for="fechaInicio">Fecha Inicio</label>
-                    <input type="date" name="fechaInicio" id="fechaInicio" value="<?php echo isset($_POST['fechaInicio']) ? $_POST['fechaInicio'] : ''; ?>"> 
+                    <input class="fechaInicio" type="date" name="fechaInicio" id="fechaInicio" value="<?php echo isset($_POST['fechaInicio']) ? $_POST['fechaInicio'] : ''; ?>"> 
                     <label for="fechaFin">Fecha fin</label>
-                    <input type="date" name="fechaFin" id="fechaFin" value="<?php echo isset($_POST['fechaFin']) ? $_POST['fechaFin'] : ''; ?>"> 
+                    <input class="fechaFin" type="date" name="fechaFin" id="fechaFin" value="<?php echo isset($_POST['fechaFin']) ? $_POST['fechaFin'] : ''; ?>"> 
                     <button type="submit">Filtrar</button>
                     <button onclick="printTable();" >Imprimir</button>
                 </form>
@@ -109,6 +140,24 @@ try {
             </tbody>
         </table>
     </div>
+    <div id="print-header" class="no-show ">
+    <div class="header-item">
+        <img class="header-logo" src="./img/logo-fucla.png" alt="Logo">
+    </div>
+    <div class="header-item">
+        <h1>Campus Universitario</h1>
+    </div>
+    <div class="header-item">
+        <p>Fecha: <?php echo date("d-m-Y"); ?></p>
+    </div>
+    <div class="header-description">
+        <p>Descripción breve...</p>
+    </div>
+</div>
+
+
+<div class="container mt-3">
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
 
     <!-- Bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
@@ -121,7 +170,8 @@ try {
         $(document).ready(function () {
             $('#example').DataTable({
                 "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+                    "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+                    "lengthMenu": "Mostrar _MENU_"
                 },
         "lengthMenu": [5, 10, 25, 50],
         "pageLength":5
@@ -129,12 +179,13 @@ try {
         });
         
         function printTable() {
-            var printContents = document.getElementById("example").outerHTML;
-            var originalContents = document.body.innerHTML;
-            document.body.innerHTML = printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
-        }
+        var printContents = document.getElementById("print-header").outerHTML + document.getElementById("example").outerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents ;
+        window.print();
+        document.body.innerHTML = originalContents;
+}
+
     </script>
 </body>
 </html>

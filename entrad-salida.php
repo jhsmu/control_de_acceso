@@ -11,12 +11,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap-->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
+    <!-- Bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
      <!-- DataTable -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
     <!-- link de estilo de encabezado -->
     <link rel="stylesheet" href="./css/header.css">
+    <!-- link estilos de caja y modal-->
+    <link rel="stylesheet" href="./css/caja.css">
     <title>Control De Acceso|Entrada/Salida</title>
 </head>
 <body>
@@ -44,9 +46,9 @@
 
             <?php
                 foreach($ingresos as $ket => $ingreso ){
-                    
+                $filaClass = $key % 2 == 0 ? 'tabla-filas' : '';
             ?>
-                <tr>
+                <tr class="<?php echo $filaClass; ?>">
                     <?php 
                         if($ingreso['id_estudiante'] != NULL){
                             $consultaE = "SELECT estudiante.id, estudiante.nombre, estudiante.apellido, estudiante.identificacion, carrera.nombre as carrera FROM estudiante 
@@ -111,7 +113,8 @@
     $(document).ready(function () {
     $('#example').DataTable({
         "language": {
-                        "url":"//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+                        "url":"//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+                        "lengthMenu": "Mostrar _MENU_"
                     },
         "lengthMenu": [5, 10, 25, 50],
         "pageLength":5

@@ -1,7 +1,7 @@
 <?php
 $host = 'localhost';
 $usuario = 'root';
-$contraseña = '';
+$contraseña = 'root';
 $basededatos = 'fucla';
 
 $conexion = mysqli_connect($host, $usuario, $contraseña, $basededatos);
@@ -30,4 +30,4 @@ echo json_encode($datos);
 
 // Cerrar la conexión a la base de datos
 mysqli_close($conexion);
-?>
+
