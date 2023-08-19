@@ -49,15 +49,31 @@
     border: none;
     outline: none;
     height: 40px;
-    background: #b80f22;
+    padding: 5px 10px;
+    background: #6D757D;
     color: #fff;
     font-size: 18px;
-    border-radius: 20px;
+    border-radius: 10px;
+  }
+  .caja .posiciom1 button{
+    border: none;
+    outline: none;
+    height: 40px;
+    padding: 5px 10px;
+    background: #000039;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 10px;
   }
 .caja button:hover{
     cursor: pointer;
-    background: #ffc107;
-    color: #111;
+    background: #468B97;
+    color: #fff;
+}
+.caja .posiciom1 button:hover{
+    cursor: pointer;
+    background: #E7B10A;
+    color: #fff;
 }
 .contenido input[type="text"]{
     border: none;
@@ -70,6 +86,14 @@
     width: 100%;
     height: 30px;
 }
+.fechaInicio, .fechaFin{
+    border: none;
+    border-bottom: 1px solid #111;
+    background: transparent;
+    outline: none;
+    color: #111;
+    height: 30px;
+}
 .contenido select{
     border: none;
     border-bottom: 1px solid #111;
@@ -78,8 +102,7 @@
     height: 40px;
     color: #111;
     font-size: 16px;
-    width: 100%;
-    height: 30px;
+
 }
 select{
     border: none;
@@ -91,4 +114,30 @@ select{
     font-size: 16px;
     width: 100%;
     height: 30px;
+}
+/* estilos de tabla */
+.table{
+    border: solid 1px #1D171B;
+    background: #fff;
+    color: #111;
+}
+.table th{
+    border-right: solid 2px #fff;
+    border-bottom: solid 5px #fff;
+    background-color: #008DC6;
+    color: #fff;
+}
+.tabla-filas:nth-child(odd) {
+    background-color: #b3d9ff; /* Color de fondo azul claro */
+  }
+
+  .tabla-filas:nth-child(even) {
+    background-color: #e6f2ff; /* Color de fondo azul más claro */
+  }
+  .custom-switch-active {
+    background-color: green; /* Cambia a tu color preferido */
+}
+
+.custom-switch-inactive {
+    background-color: red; /* Cambia a tu color preferido */
 }
