@@ -1,0 +1,44 @@
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(35deg, #2f363e, #046);
+}
+
+.formulario{
+    width: 90%;
+    height: 550px;
+    background: #fff;
+    border-radius: 25px;
+}
+.formulario img{
+    width: 90%;
+    height: 100%;
+    border-top-left-radius: 25px;  /* Ajusta el valor a tu gusto */
+    border-bottom-left-radius: 25px;  /* Ajusta el valor a tu gusto */
+}
+.formulario label {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    display: block;
+}
+
+.formulario input[type="text"]{
+    border: none;
+    border-bottom: 1px solid #111;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #111;
+    font-size: 16px;
+}
+.formulario input[type="text"]:focus {
+    
+    border-bottom: solid 2px #E46848;
+}
+ .formulario textarea:focus {
+    border: solid 2px #E46848;
+ }

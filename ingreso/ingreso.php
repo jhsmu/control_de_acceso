@@ -19,6 +19,35 @@ if (isset($_POST['ingresar'])) {
     $consulta3->bindValue(':identificacion', $identificacion);
     $consulta3->execute();
     $ingresoE = $consulta3->fetch(PDO::FETCH_ASSOC);
+    // Consulta a la nueva tabla
+    $consultaAdmin = "SELECT * FROM ingreso_a WHERE cedula = :identificacion";
+    $consultaAdminDB = $DB_con->prepare($consultaAdmin);
+    $consultaAdminDB->bindValue(':identificacion', $identificacion);
+    $consultaAdminDB->execute();
+    $ingresoAdmin = $consultaAdminDB->fetch(PDO::FETCH_ASSOC);
+
+// Si la cédula existe en la nueva tabla, verifica el número de documento
+    // Consulta a la nueva tabla
+    $consultaAdmin = "SELECT * FROM ingreso_a WHERE cedula = :identificacion";
+    $consultaAdminDB = $DB_con->prepare($consultaAdmin);
+    $consultaAdminDB->bindValue(':identificacion', $identificacion);
+    $consultaAdminDB->execute();
+    $ingresoAdmin = $consultaAdminDB->fetch(PDO::FETCH_ASSOC);
+
+    // Si la cédula existe en la nueva tabla, verifica el número de documento
+    if ($ingresoAdmin) {
+        if ($ingresoAdmin['cedula'] == '1919191919') {  // Aquí reemplaza 'valorEsperadoParaAdmin' con el valor que 
+            
+            $_SESSION['ingresoAdmin'] = 'ingreso administrador';
+            header("location: ../controlacceso.php");
+            exit();
+        } elseif ($ingresoAdmin['cedula'] == '1818181818') {
+            $_SESSION['ingresoInvitado'] = 'ingresar a un invitado';
+            header("location: ../controlacceso.php");  // Redirige a 'registro.php' si el número de documento es cualquier otro
+            exit();
+        }
+        exit(); // Termina la ejecución del script
+    }
 
     if (!$ingresoC && !$ingresoE) {
         session_start();

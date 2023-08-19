@@ -1,5 +1,9 @@
-/* Encabezado */
+body{
+    background-color: #f6f8e2;
+}
 
+
+/* Encabezado */
 .navbar {
     height: 100px;
     background: #facb0e;

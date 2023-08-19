@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:8889
--- Tiempo de generación: 28-05-2023 a las 03:35:52
+-- Tiempo de generación: 23-07-2023 a las 20:59:27
 -- Versión del servidor: 5.7.34
 -- Versión de PHP: 7.4.21
 
@@ -44,6 +44,25 @@ INSERT INTO `administrador` (`id`, `usuario`, `clave`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `cargo`
+--
+
+CREATE TABLE `cargo` (
+  `id_cargo` int(11) NOT NULL,
+  `nombre` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `cargo`
+--
+
+INSERT INTO `cargo` (`id_cargo`, `nombre`) VALUES
+(1, 'administrativo'),
+(2, 'docente');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `carrera`
 --
 
@@ -52,19 +71,6 @@ CREATE TABLE `carrera` (
   `nombre` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `cargo` (
-  `id_cargo` int(11) NOT NULL,
-  `nombre` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `ingreso` (
-  `id_ingreso` int(11) NOT NULL,
-  `id_colaboradores` int(11) NULL,
-  `id_estudiante` int(11) NULL,
-  `fechaingreso` datetime,
-  `fechasalida` datetime,
-  `ingresoEstado` boolean 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 --
 -- Volcado de datos para la tabla `carrera`
 --
@@ -73,10 +79,6 @@ INSERT INTO `carrera` (`id_carrera`, `nombre`) VALUES
 (1, 'ing sistemas'),
 (2, 'ing industrial'),
 (3, 'psicologia');
-
-INSERT INTO `cargo` (`id_cargo`, `nombre`) VALUES
-(1, 'administrativo'),
-(2, 'docente');
 
 -- --------------------------------------------------------
 
@@ -117,7 +119,7 @@ CREATE TABLE `estudiante` (
   `apellido` varchar(35) NOT NULL,
   `identificacion` varchar(11) NOT NULL,
   `carrera` int(10) NOT NULL,
-  `correo` varchar(80) NOT NULL,
+  `correo` varchar(50) NOT NULL,
   `telefono` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -142,6 +144,83 @@ INSERT INTO `estudiante` (`id`, `nombre`, `apellido`, `identificacion`, `carrera
 (14, 'miguel angel', 'cataño suarez', '1977654321', 3, 'micataño@miuniclaretian.edu.co', '3008792136'),
 (15, 'paolo ', 'zuñiga mena', '1309098910', 3, 'pasuñiga@miuniclaretian.edu.co', '3136662201');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `genero`
+--
+
+CREATE TABLE `genero` (
+  `id_genero` int(11) NOT NULL,
+  `nombre` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `genero`
+--
+
+INSERT INTO `genero` (`id_genero`, `nombre`) VALUES
+(1, 'Hombre'),
+(2, 'Mujer'),
+(3, 'Otro');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ingreso`
+--
+
+CREATE TABLE `ingreso` (
+  `id_ingreso` int(11) NOT NULL,
+  `id_colaboradores` int(11) DEFAULT NULL,
+  `id_estudiante` int(11) DEFAULT NULL,
+  `fechaingreso` datetime DEFAULT NULL,
+  `fechasalida` datetime DEFAULT NULL,
+  `ingresoEstado` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `ingreso`
+--
+
+INSERT INTO `ingreso` (`id_ingreso`, `id_colaboradores`, `id_estudiante`, `fechaingreso`, `fechasalida`, `ingresoEstado`) VALUES
+(62, NULL, 2, '2023-07-21 13:04:49', '2023-07-21 13:05:21', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ingreso_a`
+--
+
+CREATE TABLE `ingreso_a` (
+  `id` int(11) NOT NULL,
+  `cedula` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `ingreso_a`
+--
+
+INSERT INTO `ingreso_a` (`id`, `cedula`) VALUES
+(1, '1919191919'),
+(2, '1818181818');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `invitados`
+--
+
+CREATE TABLE `invitados` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(25) NOT NULL,
+  `apellido` varchar(25) NOT NULL,
+  `documento` varchar(11) NOT NULL,
+  `telefono` varchar(11) NOT NULL,
+  `genero` int(5) NOT NULL,
+  `descripcion` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Índices para tablas volcadas
 --
@@ -153,27 +232,56 @@ ALTER TABLE `administrador`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `cargo`
+--
+ALTER TABLE `cargo`
+  ADD PRIMARY KEY (`id_cargo`);
+
+--
 -- Indices de la tabla `carrera`
 --
 ALTER TABLE `carrera`
   ADD PRIMARY KEY (`id_carrera`);
 
-ALTER TABLE `cargo`
-  ADD PRIMARY KEY (`id_cargo`);
-
-  ALTER TABLE `ingreso`
-  ADD PRIMARY KEY (`id_ingreso`);
 --
 -- Indices de la tabla `colaboradores`
 --
 ALTER TABLE `colaboradores`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `documento` (`documento`);
+  ADD UNIQUE KEY `documento` (`documento`),
+  ADD KEY `cargo` (`cargo`);
 
 --
 -- Indices de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `carrera` (`carrera`);
+
+--
+-- Indices de la tabla `genero`
+--
+ALTER TABLE `genero`
+  ADD PRIMARY KEY (`id_genero`);
+
+--
+-- Indices de la tabla `ingreso`
+--
+ALTER TABLE `ingreso`
+  ADD PRIMARY KEY (`id_ingreso`),
+  ADD KEY `id_colaboradores` (`id_colaboradores`),
+  ADD KEY `id_estudiante` (`id_estudiante`);
+
+--
+-- Indices de la tabla `ingreso_a`
+--
+ALTER TABLE `ingreso_a`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `invitados`
+--
+ALTER TABLE `invitados`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -184,48 +292,81 @@ ALTER TABLE `estudiante`
 -- AUTO_INCREMENT de la tabla `administrador`
 --
 ALTER TABLE `administrador`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `cargo`
+--
+ALTER TABLE `cargo`
+  MODIFY `id_cargo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `carrera`
 --
 ALTER TABLE `carrera`
-  MODIFY `id_carrera` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-
-  ALTER TABLE `cargo`
-  MODIFY `id_cargo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id_carrera` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `colaboradores`
 --
 ALTER TABLE `colaboradores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT de la tabla `genero`
+--
+ALTER TABLE `genero`
+  MODIFY `id_genero` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso`
 --
 ALTER TABLE `ingreso`
-  MODIFY `id_ingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id_ingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+
+--
+-- AUTO_INCREMENT de la tabla `ingreso_a`
+--
+ALTER TABLE `ingreso_a`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `invitados`
+--
+ALTER TABLE `invitados`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `colaboradores`
+--
+ALTER TABLE `colaboradores`
+  ADD CONSTRAINT `colaboradores_ibfk_1` FOREIGN KEY (`cargo`) REFERENCES `cargo` (`id_cargo`);
+
+--
+-- Filtros para la tabla `estudiante`
+--
+ALTER TABLE `estudiante`
+  ADD CONSTRAINT `estudiante_ibfk_1` FOREIGN KEY (`carrera`) REFERENCES `carrera` (`id_carrera`);
+
+ALTER TABLE `invitados`
+ADD CONSTRAINT `invitados` FOREIGN KEY (`genero`) REFERENCES `genero` (id_genero);
+--
+-- Filtros para la tabla `ingreso`
+--
+ALTER TABLE `ingreso`
+  ADD CONSTRAINT `ingreso_ibfk_1` FOREIGN KEY (`id_colaboradores`) REFERENCES `colaboradores` (`id`),
+  ADD CONSTRAINT `ingreso_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id`);
 COMMIT;
-
-ALTER TABLE colaboradores ADD FOREIGN KEY(cargo)
-REFERENCES cargo(id_cargo);
-
-ALTER TABLE estudiante ADD FOREIGN KEY(carrera)
-REFERENCES carrera(id_carrera);
-
-ALTER TABLE ingreso ADD FOREIGN KEY(id_colaboradores)
-REFERENCES colaboradores(id);
-
-ALTER TABLE ingreso ADD FOREIGN KEY(id_estudiante)
-REFERENCES estudiante(id);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

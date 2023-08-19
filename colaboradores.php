@@ -58,7 +58,7 @@
         <div class="posicion">
         <form action="" method="post">
             <select name="cargo" id="" onchange="cambio()">
-                <option value="" selected>Seleccione</option>
+                <option value="" selected>Colaboradores</option>
                 <?php
                     foreach ($cargos as $key => $cargo){     
                 ?>
@@ -84,7 +84,7 @@
         <table id="example" class="table table-striped table-bordered" style="width:100%" >
             <thead>
                 <tr>
-                    <th>Id</th>
+                    
                     <th>Nombres</th>
                     <th>Apellidos</th>
                     <th>Identificaciòn</th>
@@ -99,7 +99,7 @@
                         foreach ($rows as $row){  
                 ?>
             <tr>
-                <td><?php echo $row["id"]; ?></td>
+                
                 <td><?php echo $row["nombre"];?></td>
                 <td><?php echo $row["apellido"];?></td>
                 <td><?php echo $row["documento"]; ?></td>
@@ -143,7 +143,7 @@
                         </div>
                         <div class="col-6 mt-3">
                             <label for="cargo">Cargo</label>
-                                <select name="cargo" id="cargo" required>
+                                <select name="cargo" id="cargo">
                                     <option value="" selected>Seleccione</option>
                                     <?php
                                         foreach ($cargos as $key => $cargo){     
@@ -194,7 +194,7 @@
                 </select>        
 
         <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
         <button type="button" class="btn btn-primary" onclick="generarCodigosQR()">Generar</button>
       </div>
       </div>
@@ -215,7 +215,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" onclick="imprimirCodigosQR()">Imprimir</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
@@ -239,7 +239,8 @@
     $(document).ready(function () {
     $('#example').DataTable({
         "language": {
-                        "url":"//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+                        "url":"//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+                        "lengthMenu": "Mostrar _MENU_"
                     },
         "lengthMenu": [5, 10, 25, 50],
         "pageLength":5

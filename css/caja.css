@@ -49,14 +49,15 @@
     border: none;
     outline: none;
     height: 40px;
-    background: #b80f22;
+    padding: 5px 10px;
+    background: #000039;
     color: #fff;
     font-size: 18px;
-    border-radius: 20px;
+    border-radius: 10px;
   }
 .caja button:hover{
     cursor: pointer;
-    background: #ffc107;
+    background: #E46848;
     color: #111;
 }
 .contenido input[type="text"]{
@@ -70,6 +71,14 @@
     width: 100%;
     height: 30px;
 }
+.fechaInicio, .fechaFin{
+    border: none;
+    border-bottom: 1px solid #111;
+    background: transparent;
+    outline: none;
+    color: #111;
+    height: 30px;
+}
 .contenido select{
     border: none;
     border-bottom: 1px solid #111;
@@ -78,8 +87,7 @@
     height: 40px;
     color: #111;
     font-size: 16px;
-    width: 100%;
-    height: 30px;
+
 }
 select{
     border: none;
@@ -91,4 +99,14 @@ select{
     font-size: 16px;
     width: 100%;
     height: 30px;
+}
+/* estilos de tabla */
+.table{
+    border: solid 1px #1D171B;
+}
+.table th{
+    border-right: solid 2px #fff;
+    border-bottom: solid 5px #fff;
+    background-color: #E46848;
+    color: #fff;
 }
