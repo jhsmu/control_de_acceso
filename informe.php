@@ -116,10 +116,16 @@ if ($tipoFiltro === 'invitados') {
                     </select>
 
                     <label for="fechaInicio">Fecha Inicio</label>
+<<<<<<< HEAD
                     <input class="fechaInicio" type="date" name="fechaInicio" id="fechaInicio" value="<?php echo isset($_POST['fechaInicio']) ? $_POST['fechaInicio'] : ''; ?>">
                     <label for="fechaFin">Fecha fin</label>
                     <input class="fechaFin" type="date" name="fechaFin" id="fechaFin" value="<?php echo isset($_POST['fechaFin']) ? $_POST['fechaFin'] : ''; ?>">
 
+=======
+                    <input class="fechaInicio" type="date" name="fechaInicio" id="fechaInicio" value="<?php echo isset($_POST['fechaInicio']) ? $_POST['fechaInicio'] : ''; ?>"> 
+                    <label for="fechaFin">Fecha fin</label>
+                    <input class="fechaFin" type="date" name="fechaFin" id="fechaFin" value="<?php echo isset($_POST['fechaFin']) ? $_POST['fechaFin'] : ''; ?>"> 
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
                     <button type="submit">Filtrar</button>
                     <button onclick="printTable();">Imprimir</button>
                 </form>
@@ -202,6 +208,16 @@ if ($tipoFiltro === 'invitados') {
     <div class="header-item">
         <h1>Campus Universitario</h1>
     </div>
+<<<<<<< HEAD
+=======
+    <div id="print-header" class="no-show ">
+    <div class="header-item">
+        <img class="header-logo" src="./img/logo-fucla.png" alt="Logo">
+    </div>
+    <div class="header-item">
+        <h1>Campus Universitario</h1>
+    </div>
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
     <div class="header-item">
         <p>Fecha: <?php echo date("d-m-Y"); ?></p>
     </div>
@@ -243,7 +259,11 @@ if ($tipoFiltro === 'invitados') {
 
     </script>
 </body>
+<<<<<<< HEAD
 </html>
 <?php 
 
 ?>
+=======
+</html>
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798

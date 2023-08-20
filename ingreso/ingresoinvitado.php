@@ -9,10 +9,13 @@ if (isset($_POST['ingresar'])) {
     $telefono = $_POST['telefono'];
     $genero = $_POST['genero'];
     $descripcion = $_POST['descripcion'];
+<<<<<<< HEAD
     
     $hora_actual = new DateTime();
     $hora_actual->modify('-5 hours');
     $hora_resta = $hora_actual->format('Y-m-d H:i:s');
+=======
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
 
     // Obtener el id_genero correspondiente al nombre de género seleccionado
@@ -28,8 +31,13 @@ if (isset($_POST['ingresar'])) {
         $id_genero = $stmt_genero->fetchColumn();
 
         // Preparar la consulta SQL para insertar los datos en la tabla "invitados"
+<<<<<<< HEAD
         $sql = "INSERT INTO invitados (nombre, apellido, documento, telefono, genero, descripcion,fecha) 
                 VALUES (:nombre, :apellido, :documento, :telefono, :genero, :descripcion, :fecha)";
+=======
+        $sql = "INSERT INTO invitados (nombre, apellido, documento, telefono, genero, descripcion) 
+                VALUES (:nombre, :apellido, :documento, :telefono, :genero, :descripcion)";
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
         // Preparar la sentencia
         $stmt = $DB_con->prepare($sql);
@@ -41,7 +49,10 @@ if (isset($_POST['ingresar'])) {
         $stmt->bindParam(':telefono', $telefono);
         $stmt->bindParam(':genero', $genero); // Usar el nombre del género seleccionado
         $stmt->bindParam(':descripcion', $descripcion);
+<<<<<<< HEAD
         $stmt ->bindParam(':fecha',$hora_resta);
+=======
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
         
 
         // Ejecutar la consulta

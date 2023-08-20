@@ -2,13 +2,21 @@
 include './Database/conexion.php';
 
 if (!isset($_POST["genero"])) {
+<<<<<<< HEAD
     $consulta = "SELECT invitados.nombre, invitados.apellido, invitados.documento, genero.nombre as genero, invitados.descripcion, invitados.telefono , invitados.fecha FROM invitados
+=======
+    $consulta = "SELECT invitados.nombre, invitados.apellido, invitados.documento, genero.nombre as genero, invitados.descripcion, invitados.telefono FROM invitados
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
                  INNER JOIN genero ON invitados.genero = genero.id_genero";
     $consulta1 = $DB_con->prepare($consulta);
     $consulta1->execute();
 } else {
     $prueba = $_POST["genero"];
+<<<<<<< HEAD
     $consulta = "SELECT invitados.nombre, invitados.apellido, invitados.documento, genero.nombre as genero, invitados.descripcion, invitados.telefono , invitados.fecha FROM invitados
+=======
+    $consulta = "SELECT invitados.nombre, invitados.apellido, invitados.documento, genero.nombre as genero, invitados.descripcion, invitados.telefono FROM invitados
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
                  INNER JOIN genero ON invitados.id_genero = genero.id_genero WHERE genero.id_genero = :genero";
     $consulta1 = $DB_con->prepare($consulta);
     $consulta1->bindParam(":genero", $prueba);
@@ -59,7 +67,11 @@ $generos = $consulta2->fetchAll(PDO::FETCH_ASSOC);
         <div class="posicion">
             <form action="" method="post">
             <select name="carrera" id="" onchange="cambio()">
+<<<<<<< HEAD
                 <option value="" >Seleccione</option>
+=======
+                <option value="" selected>Programas</option>
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
                 <?php
                     foreach ($carreras as $key => $carrera){     
                 ?>
@@ -91,7 +103,10 @@ $generos = $consulta2->fetchAll(PDO::FETCH_ASSOC);
                 <th>Telefono</th>
                 <th>Genero</th>
                 <th>Descripcion</th>
+<<<<<<< HEAD
                 <th>Fecha</th>
+=======
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
             </tr>
         </thead>
         <tbody>
@@ -109,8 +124,12 @@ $generos = $consulta2->fetchAll(PDO::FETCH_ASSOC);
         echo '<td>' . $row["documento"] . '</td>';
         echo '<td>' . $row["telefono"] . '</td>';
         echo '<td>' . $row["genero"] . '</td>';
+<<<<<<< HEAD
         echo '<td>' . $row["descripcion"] . '</td>'; 
         echo '<td>' . $row["fecha"] . '</td>';
+=======
+        echo '<td>' . $row["descripcion"] . '</td>';
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
         echo '</tr>';
 
         $filaIndex++;

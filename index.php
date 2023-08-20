@@ -50,6 +50,7 @@ error_reporting(0);
   <script>
 $(document).ready(function () {
     <?php
+<<<<<<< HEAD
     if (isset($_SESSION['lastInsertId']) && isset($_SESSION['nombrePersona'])) {
     ?>
     var lastInsertId = <?php echo $_SESSION['lastInsertId']; ?>;
@@ -58,6 +59,15 @@ $(document).ready(function () {
     function verificarToken() {
         Swal.fire({
             title: "Por favor Ingrese el token de verificación para <strong>" + nombrePersona + "</strong>",
+=======
+    if (isset($_SESSION['lastInsertId'])) {
+    ?>
+    var lastInsertId = <?php echo $_SESSION['lastInsertId']; ?>;
+    
+    function verificarToken() {
+        Swal.fire({
+            title: 'Ingresa el token de verificación',
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
             input: 'text',
             showCancelButton: true,
             confirmButtonText: 'Verificar',
@@ -73,8 +83,13 @@ $(document).ready(function () {
                     if (response === "success") {
                         Swal.fire({
                             icon: 'success',
+<<<<<<< HEAD
                             title: 'Bienvenido/a!',
                             html: "Al campus Universitario Uniclaretiana <strong>" + nombrePersona + "</strong>" 
+=======
+                            title: 'Bienvenido',
+                            text: 'Al campus Universitario Uniclaretiana'
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
                         });
                     } else {
                         Swal.fire({
@@ -102,7 +117,10 @@ $(document).ready(function () {
     verificarToken(); // Llamar a la función para iniciar el proceso de verificación
     <?php
     unset($_SESSION['lastInsertId']);
+<<<<<<< HEAD
     unset($_SESSION['nombrePersona']);
+=======
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
     }
     ?>
 });

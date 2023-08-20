@@ -4,7 +4,11 @@
         private $host="localhost";
         private $dbname="fucla";
         private $username="root";
+<<<<<<< HEAD
         private $password="root";
+=======
+        private $password="";
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
         private $charset="utf8";
 
         public function connect(){
@@ -24,4 +28,8 @@
                 die();//Termina la ejecución
             }
         }
+<<<<<<< HEAD
     }
+=======
+    }
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798

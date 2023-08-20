@@ -149,8 +149,11 @@ if (isset($_POST['ingresar'])) {
                         if ($response === false) {
                 echo "Error al enviar el mensaje de texto.";
             } else {
+<<<<<<< HEAD
                 $nombrePersona = ($ingresoC) ? $ingresoC['nombre'] : $ingresoE['nombre'];
                  $_SESSION['nombrePersona'] = $nombrePersona; // Almacena el nombre en la sesión
+=======
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
                 header("Location: ../controlacceso.php");
                 exit();   
             }
@@ -179,7 +182,10 @@ if (isset($_POST['ingresar'])) {
         $consultaIngreso->execute();
         $registroIngreso = $consultaIngreso->fetch(PDO::FETCH_ASSOC);
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
         if ($registroIngreso) {
             $hora_actual = new DateTime();
             $hora_actual->modify('-5 hours');
@@ -194,9 +200,13 @@ if (isset($_POST['ingresar'])) {
             $actualizar = $query->execute();
 
             if ($actualizar) {
+<<<<<<< HEAD
                 // $_SESSION['salida'] = 'Salida exitosa';
                 $_SESSION['salida'] = 'Salida exitosa';
                 $_SESSION['nombrePersona'] = ($ingresoC) ? $ingresoC['nombre'] : $ingresoE['nombre'];
+=======
+                $_SESSION['salida'] = 'Salida exitosa';
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
                 header("location: ../controlacceso.php");
                 exit();
             } else {
