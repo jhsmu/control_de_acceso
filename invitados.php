@@ -61,11 +61,7 @@ error_reporting(0);
                         </div>
                     </div>
                     <div class="pt-2">
-<<<<<<< HEAD
                         <label for="descripcion">Detelles de su visita</label>
-=======
-                        <label for="descripcion">A que viene a el campus</label>
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
                         <textarea class="form-control" name="descripcion" id="descripcion" cols="129" rows="5" style="resize: none;" required></textarea>
                     </div>
 

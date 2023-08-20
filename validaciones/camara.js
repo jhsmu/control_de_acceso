@@ -32,22 +32,14 @@ navigator.mediaDevices.getUserMedia({ video: true })
           .then(data => {
             data = JSON.parse(data);
             console.log('Respuesta del PHP:', data);
-<<<<<<< HEAD
             let {state, mensajeSalida  } = data;
-=======
-            let {state  } = data;
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
             switch (state) {
               case 'salida':
                 Swal.fire({
                   icon: 'success',
                   title: '¡Oh ya te vas!',
-<<<<<<< HEAD
                   text: mensajeSalida
-=======
-                  text: 'Hasta la proxima' 
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
                   });
                 break;
               case 'registroDoble':
