@@ -1,6 +1,6 @@
 <?php
 include './Database/conexion.php'; // Asegúrate de incluir la conexión a la base de datos
-
+error_reporting(E_ERROR | E_PARSE);
 if (!isset($_POST["cargo"])) {
     $consulta = "SELECT colaboradores.id, colaboradores.nombre, colaboradores.apellido, colaboradores.documento,colaboradores.estado_colaborador ,cargo.nombre as cargo, colaboradores.telefono FROM colaboradores
     INNER JOIN cargo ON colaboradores.cargo =  cargo.id_cargo";
@@ -60,7 +60,7 @@ $cargos = $consulta2->fetchAll(PDO::FETCH_ASSOC);
         <div class="posicion">
         <form action="" method="post">
             <select name="cargo" id="" onchange="cambio()">
-                <option value="" selected>Colaboradores</option>
+                <option value="">Colaboradores</option>
                 <?php
                     foreach ($cargos as $key => $cargo){     
                 ?>

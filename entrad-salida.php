@@ -1,5 +1,6 @@
 <?php 
     include './Database/conexion.php';
+    error_reporting(E_ERROR | E_PARSE);
     $consulta = "SELECT * FROM ingreso";
     $consulta1 = $DB_con ->prepare($consulta);
     $consulta1->execute();

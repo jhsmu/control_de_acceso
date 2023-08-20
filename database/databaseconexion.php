@@ -4,7 +4,7 @@
         private $host="localhost";
         private $dbname="fucla";
         private $username="root";
-        private $password="root";
+        private $password="";
         private $charset="utf8";
 
         public function connect(){

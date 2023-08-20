@@ -1,6 +1,6 @@
 <?php
 include './Database/conexion.php';
-
+error_reporting(E_ERROR | E_PARSE);
 if (!isset($_POST["carrera"])) {
     $consulta = "SELECT estudiante.id, estudiante.nombre, estudiante.apellido, estudiante.identificacion, carrera.nombre as carrera, estudiante.correo, estudiante.telefono, estudiante.estado_estudiante, estudiante.carrera as id_carrera FROM estudiante
         INNER JOIN carrera ON estudiante.carrera =  carrera.id_carrera";
@@ -61,7 +61,7 @@ $carreras = $consulta2->fetchAll(PDO::FETCH_ASSOC);
         <div class="posicion">
             <form action="" method="post">
             <select name="carrera" id="" onchange="cambio()">
-                <option value="" selected>Programas</option>
+                <option value="" >Programas</option>
                 <?php
                     foreach ($carreras as $key => $carrera){     
                 ?>
