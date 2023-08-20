@@ -3,11 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:8889
-<<<<<<< HEAD
 -- Tiempo de generación: 20-08-2023 a las 14:52:40
-=======
--- Tiempo de generación: 19-08-2023 a las 16:03:42
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 -- Versión del servidor: 5.7.34
 -- Versión de PHP: 7.4.21
 
@@ -106,19 +102,11 @@ CREATE TABLE `colaboradores` (
 
 INSERT INTO `colaboradores` (`id`, `nombre`, `apellido`, `documento`, `cargo`, `telefono`, `estado_colaborador`) VALUES
 (1, 'juan camilo', 'ortiz mena', '1278912328', 1, '573007405540', 0),
-<<<<<<< HEAD
 (3, 'esteven', 'mendez mena', '1208962328', 1, '3226430341', 1),
 (4, 'juan', 'ortiz mena', '1278912329', 2, '3235662346', 1),
 (5, 'gimena', 'herrera mena', '1278912307', 2, '3135662346', 1),
 (6, 'laura', 'perez hinestrosa', '1273912320', 2, '3245662340', 1),
 (7, 'Jhonatan Smith', 'Mena Urrutia', '1000007891', 2, '3212557264', 1);
-=======
-(2, 'felipe', 'mendoza aguilar', '1268912328', 1, '3215430346', 1),
-(3, 'esteven', 'mendez mena', '1208962328', 1, '3226430341', 1),
-(4, 'juan', 'ortiz mena', '1278912329', 2, '3235662346', 1),
-(5, 'gimena', 'herrera mena', '1278912307', 2, '3135662346', 1),
-(6, 'laura', 'perez hinestrosa', '1273912320', 2, '3245662340', 1);
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
 -- --------------------------------------------------------
 
@@ -156,12 +144,8 @@ INSERT INTO `estudiante` (`id`, `nombre`, `apellido`, `identificacion`, `carrera
 (12, 'milena ster ', 'muñoz cortes', '1022678902', 3, 'msmuñoz@miuniclaretian.edu.co', '3042139033', 1),
 (13, 'fernanda', 'sepulveda guebara', '1067878980', 3, 'fesepulveda@miuniclaretian.edu.co', '3224567891', 1),
 (14, 'miguel angel', 'cataño suarez', '1977654321', 3, 'micataño@miuniclaretian.edu.co', '3008792136', 1),
-<<<<<<< HEAD
 (15, 'paolo ', 'zuñiga mena', '1309098910', 3, 'pasuñiga@miuniclaretian.edu.co', '3136662201', 1),
 (17, 'Jhonatan Smith', 'Mena Urrutia', '1000000214', 1, 'jhsmu123@hotmail.com', '3212557264', 1);
-=======
-(15, 'paolo ', 'zuñiga mena', '1309098910', 3, 'pasuñiga@miuniclaretian.edu.co', '3136662201', 1);
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
 -- --------------------------------------------------------
 
@@ -199,7 +183,6 @@ CREATE TABLE `ingreso` (
   `token` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-<<<<<<< HEAD
 --
 -- Volcado de datos para la tabla `ingreso`
 --
@@ -217,8 +200,6 @@ INSERT INTO `ingreso` (`id_ingreso`, `id_colaboradores`, `id_estudiante`, `fecha
 (11, NULL, 2, '2023-08-19 18:33:08', '2023-08-19 18:33:56', 0, '26fbce'),
 (17, NULL, 1, '2023-08-20 00:37:36', NULL, 1, '2c170c');
 
-=======
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 -- --------------------------------------------------------
 
 --
@@ -251,7 +232,6 @@ CREATE TABLE `invitados` (
   `documento` varchar(11) NOT NULL,
   `telefono` varchar(11) NOT NULL,
   `genero` int(5) NOT NULL,
-<<<<<<< HEAD
   `descripcion` varchar(1000) NOT NULL,
   `fecha` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -265,10 +245,6 @@ INSERT INTO `invitados` (`id`, `nombre`, `apellido`, `documento`, `telefono`, `g
 (2, 'juan David', 'Sanchez', '35603593', '3156078921', 1, 'Vengo a solicitar un certificado', '2023-08-19 22:55:05'),
 (3, 'Jose Alirio', 'Cabrera', '1234567890', '3214567890', 1, 'Vengo a renunciar de la universidad', '2023-08-19 22:57:52'),
 (4, 'Luz Marina', 'Arias', '1245576849', '3128291234', 2, 'Me dirijo a una entrevista con el rector.', '2023-08-19 23:10:48');
-=======
-  `descripcion` varchar(1000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
 --
 -- Índices para tablas volcadas
@@ -360,21 +336,13 @@ ALTER TABLE `carrera`
 -- AUTO_INCREMENT de la tabla `colaboradores`
 --
 ALTER TABLE `colaboradores`
-<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
 --
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
 --
 -- AUTO_INCREMENT de la tabla `genero`
@@ -386,11 +354,7 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT de la tabla `ingreso`
 --
 ALTER TABLE `ingreso`
-<<<<<<< HEAD
   MODIFY `id_ingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-=======
-  MODIFY `id_ingreso` int(11) NOT NULL AUTO_INCREMENT;
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso_a`
@@ -402,16 +366,11 @@ ALTER TABLE `ingreso_a`
 -- AUTO_INCREMENT de la tabla `invitados`
 --
 ALTER TABLE `invitados`
-<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
 --
 -- Restricciones para tablas volcadas
 --
-<<<<<<< HEAD
 
 --
 -- Filtros para la tabla `colaboradores`
@@ -433,29 +392,6 @@ ALTER TABLE `ingreso`
   ADD CONSTRAINT `ingreso_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id`);
 
 --
-=======
-
---
--- Filtros para la tabla `colaboradores`
---
-ALTER TABLE `colaboradores`
-  ADD CONSTRAINT `colaboradores_ibfk_1` FOREIGN KEY (`cargo`) REFERENCES `cargo` (`id_cargo`);
-
---
--- Filtros para la tabla `estudiante`
---
-ALTER TABLE `estudiante`
-  ADD CONSTRAINT `estudiante_ibfk_1` FOREIGN KEY (`carrera`) REFERENCES `carrera` (`id_carrera`);
-
---
--- Filtros para la tabla `ingreso`
---
-ALTER TABLE `ingreso`
-  ADD CONSTRAINT `ingreso_ibfk_1` FOREIGN KEY (`id_colaboradores`) REFERENCES `colaboradores` (`id`),
-  ADD CONSTRAINT `ingreso_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id`);
-
---
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 -- Filtros para la tabla `invitados`
 --
 ALTER TABLE `invitados`

@@ -55,11 +55,7 @@ if (isset($_POST['ingresar'])) {
         if ($registroIngreso) {
             $state = "registroDoble";
         }else{
-<<<<<<< HEAD
         $hora_actual = new DateTime();
-=======
-            $hora_actual = new DateTime();
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
         $hora_actual->modify('-5 hours');
         $hora_resta = $hora_actual->format('Y-m-d H:i:s');
     
@@ -115,11 +111,8 @@ if (isset($_POST['ingresar'])) {
             if ($response === false) {
                 echo "Error al enviar el mensaje de texto.";
             } else {
-<<<<<<< HEAD
                 $nombrePersona = ($ingresoC) ? $ingresoC['nombre'] : $ingresoE['nombre'];
                 $_SESSION['nombrePersona'] = $nombrePersona; // Almacena el nombre en la sesión
-=======
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
                 $state = "verificar";
             }
         } else {
@@ -127,11 +120,7 @@ if (isset($_POST['ingresar'])) {
             header("location: ../index.php");
             exit();
         }
-<<<<<<< HEAD
      }
-=======
-        }
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
     
         
     }elseif ($estadoIngreso == 0) {
@@ -144,11 +133,8 @@ if (isset($_POST['ingresar'])) {
         } else {
             $state = "prohibido";
         }
-<<<<<<< HEAD
         $nombrePersona = ($ingresoC) ? $ingresoC['nombre'] : $ingresoE['nombre'];
         $_SESSION['nombrePersona'] = $nombrePersona; // Almacena el nombre en la sesión
-=======
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
 
         $consultarIngreso = ($ingresoC) ? "SELECT * FROM ingreso WHERE id_colaboradores = :id AND ingresoEstado = :estado" : "SELECT * FROM ingreso WHERE id_estudiante = :id AND ingresoEstado = :estado";
         $consultaIngreso = $DB_con->prepare($consultarIngreso);
@@ -172,10 +158,7 @@ if (isset($_POST['ingresar'])) {
 
             if ($actualizar) {
                 $state ="salida";
-<<<<<<< HEAD
                 $mensajeSalida = "¡Hasta la próxima, ".$_SESSION['nombrePersona']."!";
-=======
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
             } else {
                 $_SESSION['salidaError'] = 'Error al registrar la salida';
                 header("location: ../controlacceso.php");
@@ -189,10 +172,7 @@ if (isset($_POST['ingresar'])) {
     }
     $data = array(
         "state" => $state,
-<<<<<<< HEAD
         "mensajeSalida" => $mensajeSalida
-=======
->>>>>>> c366912a80316a03334cb2e8f050d2404a029798
     );
 
     $json = json_encode($data);
