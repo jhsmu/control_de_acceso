@@ -1,6 +1,8 @@
 <?php 
 
 require_once '../database/conexion.php';
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 
 if(isset($_POST["agregar"])){
@@ -9,6 +11,7 @@ if(isset($_POST["agregar"])){
     $documento = $_POST["documento"];
     $id_cargo = $_POST["cargo"];
     $telefono = $_POST["telefono"];
+    $estado_colaborador = 1;
 
     $validar = "SELECT * FROM colaboradores WHERE documento = '$documento' ";
     $validando = $DB_con->prepare($validar);
@@ -21,22 +24,17 @@ if(isset($_POST["agregar"])){
     if($validando->rowCount() > 0){
         session_start();
         $_SESSION["documentoRepetido"] = "documento repetido";
-        header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono."&estado".$estado);
+        header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono);
     }elseif($validando1->rowCount() > 0){
         session_start();
         $_SESSION["telefonoRepetido"] = "telefono repetido";
-        header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono."&estado".$estado);
+        header("location:../colaboradores.php?nombre=".$nombre."&apellido=".$apellido."&documento=".$documento."&cargo=".$id_cargo."&telefono=".$telefono);
     }else{
         try{
 
-            $agregar=$DB_con->prepare('INSERT INTO colaboradores(nombre, apellido, documento, cargo, telefono) VALUES(:nombre, :apellido, :documento, :cargo, :telefono)');
-            
-            $agregar->bindParam(':nombre', $nombre);
-            $agregar->bindParam(':apellido', $apellido);
-            $agregar->bindParam(':documento', $documento);
-            $agregar->bindParam(':cargo', $id_cargo);
-            $agregar->bindParam(':telefono', $telefono);
-            $guardar = $agregar->execute();
+            $agregar = $DB_con->prepare('INSERT INTO colaboradores(nombre, apellido, documento, cargo, telefono, estado_colaborador) VALUES(?, ?, ?, ?, ?, ?)');
+            $guardar = $agregar->execute([$nombre, $apellido, $documento, $id_cargo, $telefono, $estado_colaborador]);
+        
             if ($guardar) {
                 session_start();
                 $_SESSION['exitoso'] = 'registro';
@@ -45,7 +43,7 @@ if(isset($_POST["agregar"])){
                 session_start();
                 $_SESSION['error'] = 'guardad';
                 header("location: ../colaboradores.php");
-            }  
+            } 
         } catch (\Throwable $th) {
             session_start();
             $_SESSION["colaboradoRepetido"] = "colaborador repetido";

@@ -1,25 +1,25 @@
 <?php
-        include './Database/conexion.php';
+include './Database/conexion.php'; // Asegúrate de incluir la conexión a la base de datos
 
-        if(!isset($_POST["cargo"])){
-        $consulta = "SELECT colaboradores.id, colaboradores.nombre, colaboradores.apellido, colaboradores.documento, cargo.nombre as cargo, colaboradores.telefono FROM colaboradores
-        INNER JOIN cargo ON colaboradores.cargo =  cargo.id_cargo";
-        $consulta1 = $DB_con->prepare($consulta);
-        $consulta1->execute();
-        }else{
-        $prueba = $_POST["cargo"];
-        $consulta = "SELECT colaboradores.id, colaboradores.nombre, colaboradores.apellido, colaboradores.documento, cargo.nombre as cargo, colaboradores.telefono FROM colaboradores
-        INNER JOIN cargo ON colaboradores.cargo =  cargo.id_cargo WHERE cargo = :cargo";
-        $consulta1 = $DB_con->prepare($consulta);
-        $consulta1 -> bindParam(":cargo",$prueba);
-        $consulta1->execute();
-        }
+if (!isset($_POST["cargo"])) {
+    $consulta = "SELECT colaboradores.id, colaboradores.nombre, colaboradores.apellido, colaboradores.documento,colaboradores.estado_colaborador ,cargo.nombre as cargo, colaboradores.telefono FROM colaboradores
+    INNER JOIN cargo ON colaboradores.cargo =  cargo.id_cargo";
+    $consulta1 = $DB_con->prepare($consulta);
+    $consulta1->execute();
+} else {
+    $prueba = $_POST["cargo"];
+    $consulta = "SELECT colaboradores.id, colaboradores.nombre, colaboradores.apellido, colaboradores.documento,colaboradores.estado_colaborador , cargo.nombre as cargo, colaboradores.telefono FROM colaboradores
+    INNER JOIN cargo ON colaboradores.cargo =  cargo.id_cargo WHERE cargo = :cargo";
+    $consulta1 = $DB_con->prepare($consulta);
+    $consulta1->bindParam(":cargo", $prueba);
+    $consulta1->execute();
+}
 
-        $consultar = "SELECT * FROM cargo";
-        $consulta2 = $DB_con->prepare($consultar);
-        $consulta2->execute();
+$consultar = "SELECT * FROM cargo";
+$consulta2 = $DB_con->prepare($consultar);
+$consulta2->execute();
 
-        $cargos = $consulta2->fetchAll(PDO::FETCH_ASSOC);
+$cargos = $consulta2->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,6 +46,8 @@
     <!-- link de generador de QR -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+     <!-- Iconos -->
+     <script src="https://kit.fontawesome.com/4b93f520b2.js" crossorigin="anonymous"></script>
 </head>
 <body>
     
@@ -58,7 +60,7 @@
         <div class="posicion">
         <form action="" method="post">
             <select name="cargo" id="" onchange="cambio()">
-                <option value="" selected>Seleccione</option>
+                <option value="" selected>Colaboradores</option>
                 <?php
                     foreach ($cargos as $key => $cargo){     
                 ?>
@@ -75,43 +77,81 @@
                 <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#agregar_colaboradores"> Agregar Colaborador</button>
             </div>
             <div class="posiciom1">
-                <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#generar_qr"> Generar Codigo QR</button>
+                <button type="submit" name="agregar" data-bs-toggle="modal" data-bs-target="#generar_qr" > Generar Codigo QR</button>
             </div>
         </div>
    </div>
     <div class="container">
          <!-- Inicio de tabla -->
         <table id="example" class="table table-striped table-bordered" style="width:100%" >
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nombres</th>
-                    <th>Apellidos</th>
-                    <th>Identificaciòn</th>
-                    <th>Cargo</th>
-                    <th>Telefono</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    if($consulta1->rowCount() > 0){
-                        $rows = $consulta1->fetchAll(PDO::FETCH_ASSOC);
-                        foreach ($rows as $row){  
-                ?>
-            <tr>
-                <td><?php echo $row["id"]; ?></td>
-                <td><?php echo $row["nombre"];?></td>
-                <td><?php echo $row["apellido"];?></td>
-                <td><?php echo $row["documento"]; ?></td>
-                <td><?php echo $row["cargo"]; ?></td>
-                <td><?php echo $row["telefono"]; ?></td>
-                
-            </tr>
-            <?php
-                }
-                    }
-            ?>
-            </tbody>
+       
+    <thead>
+        <tr>
+            <th>Estado</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Identificaciòn</th>
+            <th>Cargo</th>
+            <th>Telefono</th>
+            <th>Accion</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php
+if ($consulta1->rowCount() > 0) {
+    $rows = $consulta1->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($rows as $row) {
+        $estado_actual = $row["estado_colaborador"];
+        $estado_label = $estado_actual ? 'Habilitado' : 'Deshabilitado';
+        $estado_class = $estado_actual ? 'success' : 'danger';
+        $filaClass = $filaIndex % 2 == 0 ? 'tabla-filas' : '';
+        echo '<tr class="' . $filaClass . '">';
+        echo '<td>';
+        echo '<div class="form-check form-switch">';
+        echo '<input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck' . $row["id"] . '" ' . ($estado_actual ? 'checked' : '') . '>';
+        echo '<label class="form-check-label" for="flexSwitchCheck' . $row["id"] . '"></label>';
+        echo '</div>';
+        echo '</td>';
+        echo '<td>' . $row["nombre"] . '</td>';
+        echo '<td>' . $row["apellido"] . '</td>';
+        echo '<td>' . $row["documento"] . '</td>';
+        echo '<td>' . $row["cargo"] . '</td>';
+        echo '<td>' . $row["telefono"] . '</td>';
+        // Agregar las acciones de edición y eliminación
+        echo '<td style="text-align: center;">';
+        echo '<div style="font-size: 1.2em;">';
+        
+        if ($estado_actual) {
+            // Si el usuario está habilitado, mostrar los iconos de actualización y eliminación habilitados
+            echo '<a href="./colaborador/editar_colaborador.php?id=' . $row["id"] . '">';
+            echo '<i class="fa fa-user-pen" style="color: #0D6EFD;"></i>';
+            echo '</a>';
+            echo '<a href="#" onclick="confirmarEliminarColaborador(event, ' . $row['id'] . ')">';
+            echo '<i class="fa fa-trash" style="color: #f40606;"></i>';
+            echo '</a>';
+        } else {
+            // Si el usuario está deshabilitado, deshabilitar los iconos de actualización y eliminación
+            echo '<i class="fa fa-user-pen" style="color: #0D6EFD; opacity: 0.5; cursor: not-allowed;"></i>';
+            echo '<i class="fa fa-trash" style="color: #f40606; opacity: 0.5; cursor: not-allowed;"></i>';
+        }
+        
+        echo '</div>';
+        echo '</td>';
+        echo '</tr>';
+
+        // Agregar el código para cambiar el estado usando AJAX
+        echo '<script>';
+        echo '$("#flexSwitchCheck' . $row["id"] . '").on("change", function() {';
+        echo '    var nuevoEstado = $(this).prop("checked") ? 1 : 0;';
+        echo '    cambiarEstado(' . $row["id"] . ', nuevoEstado);';
+        echo '});';
+        echo '</script>';
+    }
+}
+?>
+
+    </tbody>
+
         </table>
          <!-- fin de tabla -->
     </div>
@@ -194,7 +234,7 @@
                 </select>        
 
         <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
         <button type="button" class="btn btn-primary" onclick="generarCodigosQR()">Generar</button>
       </div>
       </div>
@@ -215,7 +255,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" onclick="imprimirCodigosQR()">Imprimir</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
@@ -239,12 +279,84 @@
     $(document).ready(function () {
     $('#example').DataTable({
         "language": {
-                        "url":"//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+                        "url":"//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+                        "lengthMenu": "Mostrar _MENU_"
                     },
         "lengthMenu": [5, 10, 25, 50],
         "pageLength":5
     });
 });
+</script>
+<script>
+function cambiarEstado(idColaborador, nuevoEstado) {
+    $.ajax({
+        url: './cambiarEstado.php', // Cambia la ruta si es necesario
+        type: 'POST',
+        data: {
+            id: idColaborador,
+            estado: nuevoEstado
+        },
+        success: function(response) {
+            // Aquí puedes manejar la respuesta de la llamada AJAX
+            if (response.trim() === 'success') {
+                if (nuevoEstado == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Estudiante habilitado',
+                        text: '¡El estudiante ha sido habilitado exitosamente!',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Estudiante deshabilitado',
+                        text: '¡El estudiante ha sido deshabilitado exitosamente!',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ha ocurrido un error al cambiar el estado del estudiante.',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            // Manejo de errores
+        }
+    });
+}
+</script>
+<script>
+    function confirmarEliminarColaborador(event, id) {
+    event.preventDefault(); // Detiene el comportamiento predeterminado del enlace
+    
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción eliminará al colaborador.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log("Iniciando proceso de eliminación para el colaborador con ID: " + id);
+            window.location.href = "./colaborador/eliminar_colaborador.php?id=" + id;
+        } else {
+            console.log("Eliminación cancelada para el colaborador con ID: " + id);
+        }
+    });
+}
+</script>
 </script>
 
 </body>
@@ -300,6 +412,37 @@ if (isset($_SESSION['telefonoRepetido'])) {
         });
     </script>";
     unset($_SESSION['telefonoRepetido']);
+}
+if (isset($_SESSION['actualizarColaborador'])) {
+    echo "<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'estudiante actualizado' 
+        });
+    </script>";
+    unset($_SESSION['actualizarColaborador']);
+}
+if (isset($_SESSION['error_actualizar'])) {
+    echo "<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: '" . $_SESSION['mensaje_error'] . "'
+    });
+    </script>";
+    unset($_SESSION['error_actualizar']);
+    unset($_SESSION['mensaje_error']);
+}
+if (isset($_SESSION['EliminacionColaborador'])){
+    echo "<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Exito',
+        text: 'El estudiante a sido eliminado con exito'
+        });
+    </script>";
+    unset($_SESSION['EliminacionColaborador']);
 }
 ?>
 

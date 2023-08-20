@@ -3,6 +3,7 @@ session_start();
 require_once '../Database/conexion.php';
 
 if (isset($_POST['ingresar'])) {
+    $state = "";
     $pendiente = 1;
     $finalizado = 0;
     $identificacion = $_POST['indentificacion'];
@@ -21,10 +22,7 @@ if (isset($_POST['ingresar'])) {
     $ingresoE = $consulta3->fetch(PDO::FETCH_ASSOC);
 
     if (!$ingresoC && !$ingresoE) {
-        session_start();
-        $_SESSION['Prohibido'] = 'No eres del campu';
-        header("location: ../controlacceso.php");
-        exit(); // Terminar la ejecución del script
+        $state = "prohibido";
     }
 
     $estadoI = null;
@@ -75,10 +73,14 @@ if (isset($_POST['ingresar'])) {
                     $lastInsertId = $DB_con->lastInsertId();
                     $_SESSION['lastInsertId'] = $lastInsertId;
                     $_SESSION['exito'] = 'exito al registrar';
+                    $state = "exito";
+                    
+
                     header("location: ../controlacceso.php");
                     exit();
                 } else {
                     $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
+                    $state = "registroDoble";
                     header("location: ../controlacceso.php");
                     exit();
                 }
@@ -92,62 +94,70 @@ if (isset($_POST['ingresar'])) {
 
                 if ($actualizar) {
                     $_SESSION['salida'] = 'salida exitosa';
+                    $state = "salida";
                     header("location: ../controlacceso.php");
                     exit();
                 } else {
                     $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
+                    $state = "registroDoble";
                     header("location: ../controlacceso.php");
                     exit();
                 }
             }
         } else {
             $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-            header("location: ../controlacceso.php");
+            $state = "registroDoble";
             exit();
         }
     } else if ($ingresoE) {
-        if ($estadoI != $estadoIngreso) {
-            if ($estadoIngreso == 1) {
+            if($estadoI == null){
                 // Insertar nuevo registro de ingreso
                 $query3 = $DB_con->prepare("INSERT INTO ingreso(id_estudiante, fechaingreso, ingresoEstado) VALUES(:id2, :fechaingreso, :ingresoEstado)");
                 $query3->bindValue(':id2', $id2);
                 $query3->bindValue(':fechaingreso', $hora_resta);
                 $query3->bindValue(':ingresoEstado', $pendiente);
                 $guardar2 = $query3->execute();
-
                 if ($guardar2) {
-                    $lastInsertId = $DB_con->lastInsertId();
-                    $_SESSION['exito'] = 'exito al registrar';
-                    $_SESSION['lastInsertId'] = $lastInsertId;
-                    header("location: ../controlacceso.php");
-                    exit();
-                } else {
-                    $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-                    header("location: ../controlacceso.php");
-                    exit();
+                    $state = "exito";
                 }
-            } else {
-                // Actualizar registro de ingreso existente
-                $query4 = $DB_con->prepare("UPDATE ingreso SET fechasalida = :fechasalida, ingresoEstado = :ingresoEstado WHERE id_estudiante = :id2");
-                $query4->bindValue(':fechasalida', $hora_resta);
-                $query4->bindValue(':ingresoEstado', $finalizado);
-                $query4->bindValue(':id2', $id2);
-                $actualizar2 = $query4->execute();
-
-                if ($actualizar2) {
-                    $_SESSION['salida'] = 'salida exitosa';
-                    header("location: ../controlacceso.php");
-                    exit();
-                } else {
-                    $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-                    header("location: ../controlacceso.php");
-                    exit();
+            }else{
+                if($estadoI == $estadoIngreso){
+                    if ($estadoI == 1) {
+                        $state = "registroDoble";
+                    } else {
+                        $state = "salidaDoble";
+                    }
+                }else{
+                    if ($estadoI != 1) {
+                        // Actualizar registro de ingreso existente
+                        $query4 = $DB_con->prepare("UPDATE ingreso SET ingresoEstado = :ingresoEstado WHERE id_estudiante = :id2");
+                        $query4->bindValue(':ingresoEstado', $finalizado);
+                        $query4->bindValue(':id2', $id2);
+                        $actualizar2 = $query4->execute();  
+                        $state = "exito";
+                    } else {
+                        // Actualizar registro de ingreso existente
+                        $query4 = $DB_con->prepare("UPDATE ingreso SET fechasalida = :fechasalida, ingresoEstado = :ingresoEstado WHERE id_estudiante = :id2");
+                        $query4->bindValue(':fechasalida', $hora_resta);
+                        $query4->bindValue(':ingresoEstado', $finalizado);
+                        $query4->bindValue(':id2', $id2);
+                        $actualizar2 = $query4->execute();  
+                        $state = "salida";
+                    }
+                    
                 }
-            }
-        } else {
-            $_SESSION['registroDoble'] = 'Estás intentando entrar nuevamente';
-            header("location: ../controlacceso.php");
-            exit();
         }
     }
-}
+
+
+
+}    
+
+$data = array(
+        "state" => $state,
+    );
+
+    $json = json_encode($data);
+
+    header('Content-Type: application/json');
+    echo $json;
