@@ -3,27 +3,45 @@ include './Database/conexion.php';
 
 $fechaInicio = isset($_POST['fechaInicio']) ? $_POST['fechaInicio'] . " 00:00:00" : '';
 $fechaFin = isset($_POST['fechaFin']) ? $_POST['fechaFin'] . " 23:59:59" : '';
+$tipoFiltro = isset($_POST['tipoFiltro']) ? $_POST['tipoFiltro'] : '';
 
-$consulta = "SELECT ingreso.*, colaboradores.nombre AS nombre_colaborador, colaboradores.apellido AS apellido_colaborador, colaboradores.documento AS documento_colaborador, cargo.nombre AS nombre_cargo, estudiante.nombre AS nombre_estudiante, estudiante.apellido AS apellido_estudiante, estudiante.identificacion AS identificacion_estudiante, carrera.nombre AS nombre_carrera
-FROM ingreso
-LEFT JOIN colaboradores ON ingreso.id_colaboradores = colaboradores.id
-LEFT JOIN cargo ON colaboradores.cargo = cargo.id_cargo
-LEFT JOIN estudiante ON ingreso.id_estudiante = estudiante.id
-LEFT JOIN carrera ON estudiante.carrera = carrera.id_carrera
-WHERE (ingreso.fechaingreso BETWEEN :fechaInicio AND :fechaFin) OR (ingreso.fechasalida BETWEEN :fechaInicio AND :fechaFin)";
+if ($tipoFiltro === 'invitados') {
+    $consulta = "SELECT invitados.*, genero.nombre AS genero_nombre
+    FROM invitados
+    LEFT JOIN genero ON invitados.genero = genero.id_genero
+    WHERE invitados.fecha BETWEEN :fechaInicio AND :fechaFin";
 
-try {
-    $consulta1 = $DB_con->prepare($consulta);
-    $consulta1->bindParam(':fechaInicio', $fechaInicio);
-    $consulta1->bindParam(':fechaFin', $fechaFin);
-    $consulta1->execute();
+    try {
+        $consulta1 = $DB_con->prepare($consulta);
+        $consulta1->bindParam(':fechaInicio', $fechaInicio);
+        $consulta1->bindParam(':fechaFin', $fechaFin);
+        $consulta1->execute();
 
-    $ingresos = $consulta1->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
+        $ingresos = $consulta1->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+} else {
+    $consulta = "SELECT ingreso.*, colaboradores.nombre AS nombre_colaborador, colaboradores.apellido AS apellido_colaborador, colaboradores.documento AS documento_colaborador, cargo.nombre AS nombre_cargo, estudiante.nombre AS nombre_estudiante, estudiante.apellido AS apellido_estudiante, estudiante.identificacion AS identificacion_estudiante, carrera.nombre AS nombre_carrera
+    FROM ingreso
+    LEFT JOIN colaboradores ON ingreso.id_colaboradores = colaboradores.id
+    LEFT JOIN cargo ON colaboradores.cargo = cargo.id_cargo
+    LEFT JOIN estudiante ON ingreso.id_estudiante = estudiante.id
+    LEFT JOIN carrera ON estudiante.carrera = carrera.id_carrera
+    WHERE (ingreso.fechaingreso BETWEEN :fechaInicio AND :fechaFin) OR (ingreso.fechasalida BETWEEN :fechaInicio AND :fechaFin)";
+
+    try {
+        $consulta1 = $DB_con->prepare($consulta);
+        $consulta1->bindParam(':fechaInicio', $fechaInicio);
+        $consulta1->bindParam(':fechaFin', $fechaFin);
+        $consulta1->execute();
+    
+        $ingresos = $consulta1->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,25 +104,44 @@ try {
     </header>
     <!-- Fin de encabezado -->
     <!-- inicio consultas -->
-    <div class="caja" >
+    <div class="caja">
+        <!-- Formulario de filtrado -->
         <div class="posicion">
             <div class="fecha">
-                <form action="" method="POST">
+                <form action="" method="POST">                    
+                    <label for="tipoFiltro">Tipo de Filtro:</label>
+                    <select name="tipoFiltro" id="tipoFiltro">
+                        <option value="entrada" <?php if ($tipoFiltro === 'entrada') echo 'selected'; ?>>Entrada/Salida</option>
+                        <option value="invitados" <?php if ($tipoFiltro === 'invitados') echo 'selected'; ?>>Invitados</option>
+                    </select>
+
                     <label for="fechaInicio">Fecha Inicio</label>
-                    <input class="fechaInicio" type="date" name="fechaInicio" id="fechaInicio" value="<?php echo isset($_POST['fechaInicio']) ? $_POST['fechaInicio'] : ''; ?>"> 
+                    <input class="fechaInicio" type="date" name="fechaInicio" id="fechaInicio" value="<?php echo isset($_POST['fechaInicio']) ? $_POST['fechaInicio'] : ''; ?>">
                     <label for="fechaFin">Fecha fin</label>
-                    <input class="fechaFin" type="date" name="fechaFin" id="fechaFin" value="<?php echo isset($_POST['fechaFin']) ? $_POST['fechaFin'] : ''; ?>"> 
+                    <input class="fechaFin" type="date" name="fechaFin" id="fechaFin" value="<?php echo isset($_POST['fechaFin']) ? $_POST['fechaFin'] : ''; ?>">
+
                     <button type="submit">Filtrar</button>
-                    <button onclick="printTable();" >Imprimir</button>
+                    <button onclick="printTable();">Imprimir</button>
                 </form>
             </div>
         </div>
     </div>
     <!-- Fin consultas -->
     <!-- Inicio de tabla -->
-    <div class="container mt-3">
-        <table id="example" class="table table-striped table-bordered" style="width:100%">
-            <thead>
+<!-- Tabla de resultados -->
+<div class="container mt-3">
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <?php if ($tipoFiltro === 'invitados') : ?>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Identificación</th>
+                    <th>Género</th>
+                    <th>Descripción</th>
+                    <th>Fecha</th>
+                </tr>
+            <?php else : ?>
                 <tr>
                     <th>Nombres</th>
                     <th>Apellidos</th>
@@ -114,10 +151,20 @@ try {
                     <th>Fecha de Entrada</th>
                     <th>Fecha de Salida</th>
                 </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($ingresos as $ingreso) {
+            <?php endif; ?>
+        </thead>
+        <tbody>
+            <?php
+            foreach ($ingresos as $ingreso) {
+                echo "<tr>";
+                if ($tipoFiltro === 'invitados') {
+                    echo "<td>".$ingreso['nombre']."</td>";
+                    echo "<td>".$ingreso['apellido']."</td>";
+                    echo "<td>".$ingreso['documento']."</td>";
+                    echo "<td>".$ingreso['genero_nombre']."</td>";
+                    echo "<td>".$ingreso['descripcion']."</td>";
+                    echo "<td>".$ingreso['fecha']."</td>";
+                } elseif($tipoFiltro === 'entrada') {
                     echo "<tr>";
                     if (!empty($ingreso['nombre_estudiante'])) {
                         echo "<td>".$ingreso['nombre_estudiante']."</td>";
@@ -136,10 +183,18 @@ try {
                     echo "<td>".$ingreso['fechasalida']."</td>";
                     echo "</tr>";
                 }
-                ?>
-            </tbody>
-        </table>
-    </div>
+                else{
+                    session_start();
+                    $_SESSION['incorrecto'] = "no selecciono ninguna opcion";
+                    header('location: ./informe.php');
+                    exit();
+                }
+                echo "</tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+    
     <div id="print-header" class="no-show ">
     <div class="header-item">
         <img class="header-logo" src="./img/logo-fucla.png" alt="Logo">
@@ -147,6 +202,16 @@ try {
     <div class="header-item">
         <h1>Campus Universitario</h1>
     </div>
+<<<<<<< HEAD
+=======
+    <div id="print-header" class="no-show ">
+    <div class="header-item">
+        <img class="header-logo" src="./img/logo-fucla.png" alt="Logo">
+    </div>
+    <div class="header-item">
+        <h1>Campus Universitario</h1>
+    </div>
+>>>>>>> c366912a80316a03334cb2e8f050d2404a029798
     <div class="header-item">
         <p>Fecha: <?php echo date("d-m-Y"); ?></p>
     </div>
@@ -189,3 +254,6 @@ try {
     </script>
 </body>
 </html>
+<?php 
+
+?>

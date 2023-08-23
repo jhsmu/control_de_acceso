@@ -6,29 +6,30 @@ body{
 /* Encabezado */
 .navbar {
     height: 100px;
-    background: #facb0e;
+    background: #438AFE;
 }
 .navbar-brand{
     font-size: 2rem;
     margin-left: 15px;
-    color: #111;
+    margin-right: 100px;
+    color: #fff;
 }
 .navbar-brand:hover{
-    color: #fff;
+    color: #111;
 }
 .navbar-nav a:hover{
-    color: #fff;
+    color:  #111;
 }
 .navbar-toggler{
-    border: solid 2px #111;
+    border: solid 2px #fff;
     
 }
 .nav-link{
-    color: #111;
-    font-size: 1.1rem;
+    color: #fff;
+    font-size: 1.3rem;
 }
 .social{
-    color: #111;
+    color: #fff;
     font-size: 1.1rem;
     text-decoration: none;
 }
@@ -36,7 +37,7 @@ body{
     margin: 0 9.9rem 0 0;
 }
 #menu a{
-    color: #111;
+    color: #fff;
     background-color: #fff;
     font-size: 18px;
 }

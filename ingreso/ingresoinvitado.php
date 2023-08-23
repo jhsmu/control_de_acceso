@@ -9,6 +9,10 @@ if (isset($_POST['ingresar'])) {
     $telefono = $_POST['telefono'];
     $genero = $_POST['genero'];
     $descripcion = $_POST['descripcion'];
+    
+    $hora_actual = new DateTime();
+    $hora_actual->modify('-5 hours');
+    $hora_resta = $hora_actual->format('Y-m-d H:i:s');
 
 
     // Obtener el id_genero correspondiente al nombre de género seleccionado
@@ -24,8 +28,8 @@ if (isset($_POST['ingresar'])) {
         $id_genero = $stmt_genero->fetchColumn();
 
         // Preparar la consulta SQL para insertar los datos en la tabla "invitados"
-        $sql = "INSERT INTO invitados (nombre, apellido, documento, telefono, genero, descripcion) 
-                VALUES (:nombre, :apellido, :documento, :telefono, :genero, :descripcion)";
+        $sql = "INSERT INTO invitados (nombre, apellido, documento, telefono, genero, descripcion,fecha) 
+                VALUES (:nombre, :apellido, :documento, :telefono, :genero, :descripcion, :fecha)";
 
         // Preparar la sentencia
         $stmt = $DB_con->prepare($sql);
@@ -37,15 +41,16 @@ if (isset($_POST['ingresar'])) {
         $stmt->bindParam(':telefono', $telefono);
         $stmt->bindParam(':genero', $genero); // Usar el nombre del género seleccionado
         $stmt->bindParam(':descripcion', $descripcion);
+        $stmt ->bindParam(':fecha',$hora_resta);
         
 
         // Ejecutar la consulta
         if ($stmt->execute()) {
-            $_SESSION['exito'] = 'exito al registrar';
+            $_SESSION['exitoInvitado'] = 'exito al registrar';
             header("location: ../invitados.php");
             exit();
         } else {
-            $_SESSION['error'] = 'error de registro';
+            $_SESSION['errorInvitado'] = 'error de registro';
             header("location: ../invitados.php");
             exit();
         }

@@ -50,6 +50,16 @@
     outline: none;
     height: 40px;
     padding: 5px 10px;
+    background: #6D757D;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+  .caja .posiciom1 button{
+    border: none;
+    outline: none;
+    height: 40px;
+    padding: 5px 10px;
     background: #000039;
     color: #fff;
     font-size: 18px;
@@ -57,8 +67,13 @@
   }
 .caja button:hover{
     cursor: pointer;
-    background: #E46848;
-    color: #111;
+    background: #468B97;
+    color: #fff;
+}
+.caja .posiciom1 button:hover{
+    cursor: pointer;
+    background: #E7B10A;
+    color: #fff;
 }
 .contenido input[type="text"]{
     border: none;
@@ -103,10 +118,26 @@ select{
 /* estilos de tabla */
 .table{
     border: solid 1px #1D171B;
+    background: #fff;
+    color: #111;
 }
 .table th{
     border-right: solid 2px #fff;
     border-bottom: solid 5px #fff;
-    background-color: #E46848;
+    background-color: #008DC6;
     color: #fff;
+}
+.tabla-filas:nth-child(odd) {
+    background-color: #b3d9ff; /* Color de fondo azul claro */
+  }
+
+  .tabla-filas:nth-child(even) {
+    background-color: #e6f2ff; /* Color de fondo azul más claro */
+  }
+  .custom-switch-active {
+    background-color: green; /* Cambia a tu color preferido */
+}
+
+.custom-switch-inactive {
+    background-color: red; /* Cambia a tu color preferido */
 }

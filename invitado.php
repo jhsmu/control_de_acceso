@@ -2,13 +2,13 @@
 include './Database/conexion.php';
 
 if (!isset($_POST["genero"])) {
-    $consulta = "SELECT invitados.nombre, invitados.apellido, invitados.documento, genero.nombre as genero, invitados.descripcion, invitados.telefono FROM invitados
+    $consulta = "SELECT invitados.nombre, invitados.apellido, invitados.documento, genero.nombre as genero, invitados.descripcion, invitados.telefono , invitados.fecha FROM invitados
                  INNER JOIN genero ON invitados.genero = genero.id_genero";
     $consulta1 = $DB_con->prepare($consulta);
     $consulta1->execute();
 } else {
     $prueba = $_POST["genero"];
-    $consulta = "SELECT invitados.nombre, invitados.apellido, invitados.documento, genero.nombre as genero, invitados.descripcion, invitados.telefono FROM invitados
+    $consulta = "SELECT invitados.nombre, invitados.apellido, invitados.documento, genero.nombre as genero, invitados.descripcion, invitados.telefono , invitados.fecha FROM invitados
                  INNER JOIN genero ON invitados.id_genero = genero.id_genero WHERE genero.id_genero = :genero";
     $consulta1 = $DB_con->prepare($consulta);
     $consulta1->bindParam(":genero", $prueba);
@@ -59,7 +59,7 @@ $generos = $consulta2->fetchAll(PDO::FETCH_ASSOC);
         <div class="posicion">
             <form action="" method="post">
             <select name="carrera" id="" onchange="cambio()">
-                <option value="" selected>Programas</option>
+                <option value="" >Seleccione</option>
                 <?php
                     foreach ($carreras as $key => $carrera){     
                 ?>
@@ -91,27 +91,33 @@ $generos = $consulta2->fetchAll(PDO::FETCH_ASSOC);
                 <th>Telefono</th>
                 <th>Genero</th>
                 <th>Descripcion</th>
+                <th>Fecha</th>
             </tr>
         </thead>
         <tbody>
-          <?php
-              if ($consulta1->rowCount() > 0) {
-                  $rows = $consulta1->fetchAll(PDO::FETCH_ASSOC);
-                  foreach ($rows as $row) {
-          ?>
-          <tr>
-              <td><?php echo $row["nombre"]; ?></td>
-              <td><?php echo $row["apellido"]; ?></td>
-              <td><?php echo $row["documento"]; ?></td>
-              <td><?php echo $row["telefono"]; ?></td>
-              <td><?php echo $row["genero"]; ?></td>
-              <td><?php echo $row["descripcion"]; ?></td>
-          </tr>
-          <?php
-                  }
-              }
-          ?>
-      </tbody>
+    <?php
+    if ($consulta1->rowCount() > 0) {
+      $rows = $consulta1->fetchAll(PDO::FETCH_ASSOC);
+      $filaIndex = 0;
+
+      foreach ($rows as $row) {
+        $filaClass = $filaIndex % 2 == 0 ? 'tabla-filas' : '';
+
+        echo '<tr class="' . $filaClass . '">';
+        echo '<td>' . $row["nombre"] . '</td>';
+        echo '<td>' . $row["apellido"] . '</td>';
+        echo '<td>' . $row["documento"] . '</td>';
+        echo '<td>' . $row["telefono"] . '</td>';
+        echo '<td>' . $row["genero"] . '</td>';
+        echo '<td>' . $row["descripcion"] . '</td>'; 
+        echo '<td>' . $row["fecha"] . '</td>';
+        echo '</tr>';
+
+        $filaIndex++;
+      }
+    }
+    ?>
+  </tbody>
         
     </table>
 </div>
@@ -209,6 +215,7 @@ $generos = $consulta2->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
      <!-- <script src="./generar/generarQRin.js"></script> -->
     <script src="./generar/generarQRin.js"></script>
+    <script src="./impresion/impresion.js"></script>
      <script> 
         function cambio(){
             document.getElementById('buton').click();

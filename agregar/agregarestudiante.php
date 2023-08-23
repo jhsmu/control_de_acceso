@@ -1,6 +1,8 @@
 <?php 
 
 require_once '../database/conexion.php';
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 if(isset($_POST["agregar"])){
     $nombre = $_POST["nombre"];
@@ -9,6 +11,7 @@ if(isset($_POST["agregar"])){
     $id_carrera = $_POST["carrera"];
     $correo = $_POST["correo"];
     $telefono = $_POST["telefono"];
+    $estado_estudiante=1;
 
      $validar = "SELECT * FROM estudiante WHERE identificacion = '$identificacion' ";
      $validando = $DB_con->prepare($validar);
@@ -25,26 +28,20 @@ if(isset($_POST["agregar"])){
      if($validando->rowCount() > 0){
         session_start();
          $_SESSION["documentoRepetido"] = "documento repetido";
-        header("location:../estudiantes.php?nombre=".$nombre."&apellido=".$apellido."&identificacion=".$identificacion."&carrera=".$id_carrera."&correo=".$correo."&telefono=".$telefono."&estado".$estado);
+        header("location:../estudiantes.php?nombre=".$nombre."&apellido=".$apellido."&identificacion=".$identificacion."&carrera=".$id_carrera."&correo=".$correo."&telefono=".$telefono);
      }elseif($validando1->rowCount() > 0){
         session_start();
         $_SESSION["telefonoRepetido"] = "telefono repetido";
-        header("location:../estudiantes.php?nombre=".$nombre."&apellido=".$apellido."&identificacion=".$identificacion."&carrera=".$id_carrera."&correo=".$correo."&telefono=".$telefono."&estado".$estado);
+        header("location:../estudiantes.php?nombre=".$nombre."&apellido=".$apellido."&identificacion=".$identificacion."&carrera=".$id_carrera."&correo=".$correo."&telefono=".$telefono);
     }elseif($validando2->rowCount() > 0){
         session_start();
         $_SESSION["correoRepetido"] = "correo repetido";
-        header("location:../estudiantes.php?nombre=".$nombre."&apellido=".$apellido."&identificacion=".$identificacion."&carrera=".$id_carrera."&correo=".$correo."&telefono=".$telefono."&estado".$estado);
+        header("location:../estudiantes.php?nombre=".$nombre."&apellido=".$apellido."&identificacion=".$identificacion."&carrera=".$id_carrera."&correo=".$correo."&telefono=".$telefono);
     }else{
          try{
             
-            $agregar=$DB_con->prepare('INSERT INTO estudiante(nombre, apellido, identificacion, carrera,correo, telefono) VALUES(:nombre, :apellido, :identificacion, :carrera,:correo, :telefono)');
-            $agregar->bindParam(':nombre', $nombre);
-            $agregar->bindParam(':apellido', $apellido);
-            $agregar->bindParam(':documento', $identificacion);
-            $agregar->bindParam(':carrera', $id_carrera);
-            $agregar->bindParam(':correo', $correo);
-            $agregar->bindParam(':telefono', $telefono);
-            $guardar = $agregar->execute();
+            $agregar=$DB_con->prepare('INSERT INTO estudiante(nombre, apellido, identificacion, carrera,correo, telefono, estado_estudiante) VALUES(?, ?, ?, ?, ?, ?, ?)');
+            $guardar = $agregar->execute([$nombre,$apellido,$identificacion,$id_carrera,$correo,$telefono,$estado_estudiante]);
             if ($guardar) {
                 session_start();
                 $_SESSION['exitoso'] = 'registro';
@@ -57,7 +54,7 @@ if(isset($_POST["agregar"])){
         } catch (\Throwable $th) {
             session_start();
             $_SESSION["estudianteRepetido"] = "estudiante repetido";
-            header("location:../estudiantes.php?nombre=".$nombre."&apellido=".$apellido."&identificacion=".$identificacion."&carrera=".$id_carrera."&correo=".$correo."&telefono=".$telefono."&estado".$estado);
+            header("location:../estudiantes.php?nombre=".$nombre."&apellido=".$apellido."&identificacion=".$identificacion."&carrera=".$id_carrera."&correo=".$correo."&telefono=".$telefono);
         }
     }
 

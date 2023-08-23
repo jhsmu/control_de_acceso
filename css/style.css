@@ -19,6 +19,9 @@ body {
     border-top-left-radius: 25px;  /* Ajusta el valor a tu gusto */
     border-bottom-left-radius: 25px;  /* Ajusta el valor a tu gusto */
 }
+.formulario .altura{
+    padding: 80px 0;
+}
 .formulario label {
     margin: 0;
     padding: 0;
@@ -32,6 +35,7 @@ body {
     background: transparent;
     outline: none;
     height: 40px;
+    width: 90%;
     color: #111;
     font-size: 16px;
 }
@@ -41,4 +45,25 @@ body {
 }
  .formulario textarea:focus {
     border: solid 2px #E46848;
+ }
+ .formulario .carrera{
+    border: none;
+    border-bottom: 1px solid #111;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #111;
+    font-size: 16px;
+    width: 90%;
+    height: 30px;
+ }
+ .formulario form .inicio{
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: #111;
+    
+ }
+ .formulario form .inicio:hover{
+    color: #2f363e;
  }

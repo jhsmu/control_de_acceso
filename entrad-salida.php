@@ -46,9 +46,9 @@
 
             <?php
                 foreach($ingresos as $ket => $ingreso ){
-                    
+                $filaClass = $key % 2 == 0 ? 'tabla-filas' : '';
             ?>
-                <tr>
+                <tr class="<?php echo $filaClass; ?>">
                     <?php 
                         if($ingreso['id_estudiante'] != NULL){
                             $consultaE = "SELECT estudiante.id, estudiante.nombre, estudiante.apellido, estudiante.identificacion, carrera.nombre as carrera FROM estudiante 

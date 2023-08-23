@@ -12,6 +12,7 @@ error_reporting(0);
     <link rel="stylesheet" href="./css/login.css">
     <link rel="stylesheet" href="./css/reloj.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Sistema de Control de Acceso</title>
   </head>
   <body>
@@ -25,21 +26,84 @@ error_reporting(0);
       <img src="./img/logo-fucla.png" class="avatar" alt="logo fluca">
       <h1>Campus Univerisitario</h1>
       <h3>Uniclaretiana</h3>
-      <form  method="post" action="./ingreso/ingreso.php">
-        <label for="identifiacion">Indentificacion</label>
-        <input type="text" name="indentificacion" placeholder="Digite su Documento">
+      <form method="post" action="./ingreso/ingreso.php">
+        <label for="identificacion">Identificación</label>
+        <input type="text" name="identificacion" placeholder="Digite su Documento">
         <select name="estado" id="estado">
             <option value="" selected>Seleccione</option>
-            <option value="1" >Entrada</option>
-            <option value="0" >Salida</option>
-            </select>
+            <option value="1">Entrada</option>
+            <option value="0">Salida</option>
+        </select>
         <button class="boton" type="submit" name="ingresar">Ingreso</button>
-        <a href="./invitado.php">Invitado</a><br>
-        <a href="./index.php">Lectura de Codigo QR </a>
-      </form>
+        <a href="./index.php">Lectura de Código QR</a>
+    </form>
+
     </div>
 
     <script src="./validaciones/anima.js"></script>
+    <script>
+$(document).ready(function () {
+    <?php
+    if (isset($_SESSION['lastInsertId']) && isset($_SESSION['nombrePersona'])) {
+    ?>
+    var lastInsertId = <?php echo $_SESSION['lastInsertId']; ?>;
+    var nombrePersona = "<?php echo $_SESSION['nombrePersona']; ?>";
+    
+    function verificarToken() {
+        Swal.fire({
+            title: "Por favor Ingrese el token de verificación para <strong>" + nombrePersona + "</strong>",
+            input: 'text',
+            showCancelButton: true,
+            confirmButtonText: 'Verificar',
+            showLoaderOnConfirm: true,
+            preConfirm: (token) => {
+                return $.ajax({
+                    type: "POST",
+                    url: "./verificar_token.php", // Archivo PHP que verificará el token
+                    data: { token: token, idUsuario: lastInsertId },
+                })
+                .then(function(response) {
+                    response = response.trim(); // Eliminar espacios en blanco
+                    if (response === "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Bienvenido/a!',
+                            html: "Al campus Universitario Uniclaretiana <strong>" + nombrePersona + "</strong>" 
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Token incorrecto',
+                            text: 'El token ingresado no es válido'
+                        }).then(() => {
+                            verificarToken(); // Llamar a la función nuevamente para intentar verificar otro token
+                        });
+                    }
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Verificación cancelada',
+                    text: 'Has cancelado la verificación'
+                });
+            }
+        });
+    }
+    
+    verificarToken(); // Llamar a la función para iniciar el proceso de verificación
+    <?php
+    unset($_SESSION['lastInsertId']);
+    unset($_SESSION['nombrePersona']);
+    }
+    ?>
+});
+
+</script>
+
+
     
   </body>
 </html>
@@ -99,27 +163,16 @@ if(isset($_SESSION['ingresoInvitado'])){
   unset($_SESSION['ingresoInvitado']);
 }
 
-
-if (isset($_SESSION["exito"])) {
+ if (isset($_SESSION["salida"])) {
   echo "<script>
   Swal.fire({
       icon: 'success',
-      title: 'Bienvenido',
-      text: 'Al campus Universitario Uniclaretiana ' 
-      });
-  </script>";
-  unset($_SESSION['exito']);
-}
-
-if (isset($_SESSION["salida"])) {
-  echo "<script>
-  Swal.fire({
-      icon: 'success',
-      title: '¡Oh ya te vas!',
-      text: 'Hasta la proxima' 
-      });
+      title: '¡Hasta la próxima!',
+      html: 'Salida exitosa de <strong>{$_SESSION['nombrePersona']}</strong>'
+  });
   </script>";
   unset($_SESSION['salida']);
+  unset($_SESSION['nombrePersona']);
 }
 
 if (isset($_SESSION["registroDoble"])) {
@@ -144,4 +197,14 @@ if (isset($_SESSION["Prohibido"])) {
   unset($_SESSION['Prohibido']);
 }
 
+if (isset($_SESSION['UsuarioDeshabilitado'])){
+  echo "<script>
+  Swal.fire({
+      icon: 'warning',
+      title: '!Ohh lo sentimos¡',
+      text: 'Pero actualmente estas Inhabilitado comunicate con...'
+      });
+  </script>";
+}
+unset($_SESSION['UsuarioDeshabilitado'])
 ?>

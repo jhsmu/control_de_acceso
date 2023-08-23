@@ -21,7 +21,6 @@
                     <li class="nav-item"><a href="./invitado.php" class="nav-link">Invitados</a></li>
                     <li class="nav-item"><a href="./entrad-salida.php" class="nav-link">Entrada/Salida</a></li>
                     <li class="nav-item"><a href="./informe.php" class="nav-link">Informe</a></li>
-
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="dropdown">
@@ -38,7 +37,7 @@
                         </div>
                     </li>
 
-                </ul>
+                </ul> 
             </div>
         </div>
     </nav>
